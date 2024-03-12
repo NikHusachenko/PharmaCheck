@@ -1,0 +1,6 @@
+@PharmaCheck.Web_HostAddress = http://localhost:5180
+
+GET {{PharmaCheck.Web_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
