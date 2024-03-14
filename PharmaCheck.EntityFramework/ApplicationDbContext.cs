@@ -1,16 +1,18 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using PharmaCheck.Database.Entities;
+using PharmaCheck.EntityFramework.Configurations;
 
 namespace PharmaCheck.EntityFramework
 {
     public class ApplicationDbContext : DbContext
     {
         //Set tables
-        public DbSet<EntityBase> Entities { get; set; }
-        public DbSet<MedicineEntity> MedicineEntities { get; set;}
-        public DbSet<OrderEntity> OrderEntities { get; set; }
-        public DbSet<PharmacyEntity> PharmacyEntities { get;set; }
-        public DbSet<UserEntity> UserEntities { get; set; }
+        public DbSet<EntityBase> Bases { get; set; }
+        public DbSet<MedicineEntity> Medicine { get; set;}
+        public DbSet<OrderEntity> Orders { get; set; }
+        public DbSet<PharmacyEntity> Pharmacies { get;set; }
+        public DbSet<UserEntity> Users { get; set; }
 
         //Tables Defined
         //Ctor/Migrations
@@ -28,11 +30,11 @@ namespace PharmaCheck.EntityFramework
         //Configure tables
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<EntityBase>();
-            modelBuilder.Entity<MedicineEntity>();
-            modelBuilder.Entity<OrderEntity>();
-            modelBuilder.Entity<PharmacyEntity>();
-            modelBuilder.Entity<UserEntity>();
+            modelBuilder.ApplyConfiguration(new PointConfiguration());
+            modelBuilder.ApplyConfiguration(new MedicineConfiguration());
+            modelBuilder.ApplyConfiguration(new OrderConfiguration());
+            modelBuilder.ApplyConfiguration(new PharmacyConfiguration());
+            modelBuilder.ApplyConfiguration(new UserConfiguration());
         }
 
     }
