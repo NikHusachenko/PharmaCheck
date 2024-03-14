@@ -8,12 +8,16 @@ namespace PharmaCheck.Actors;
 
 public sealed class ActorService : IHostedService
 {
+    private const string MASTER_ACTOR_IS_NULL_ERROR = "MasterActor is null";
+
     private readonly IConfiguration _configuration;
     private readonly IServiceProvider _serviceProvider;
     private readonly IHostApplicationLifetime _applicationLifetime;
 
     private ActorSystem _system;
     private IActorRef _masterActor;
+
+    public IActorRef MasterActor => _masterActor ?? throw new InvalidOperationException(MASTER_ACTOR_IS_NULL_ERROR);
 
     public ActorService(IConfiguration configuration, 
         IServiceProvider serviceProvider, 

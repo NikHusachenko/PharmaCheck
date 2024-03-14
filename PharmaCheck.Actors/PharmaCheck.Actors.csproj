@@ -13,4 +13,9 @@
     <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="8.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\PharmaCheck.Database\PharmaCheck.Database.csproj" />
+    <ProjectReference Include="..\PharmaCheck.Services\PharmaCheck.Services.csproj" />
+  </ItemGroup>
+
 </Project>
