@@ -2,6 +2,7 @@
 using Microsoft.IdentityModel.Tokens;
 using PharmaCheck.Database.Entities;
 using PharmaCheck.EntityFramework.Configurations;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace PharmaCheck.EntityFramework
 {
@@ -24,7 +25,7 @@ namespace PharmaCheck.EntityFramework
         //Configure db connection
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseNpgsql();
+            optionsBuilder.UseNpgsql("Server=127.0.0.1;Port=5432;Database=DbPharmacy;User Id=postgres;Password=root;");
         }
 
         //Configure tables

@@ -1,3 +1,4 @@
+using PharmaCheck.EntityFramework; 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -23,3 +24,5 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+ApplicationDbContext dbContext = new ApplicationDbContext();

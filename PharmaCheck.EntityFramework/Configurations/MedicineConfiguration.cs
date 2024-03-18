@@ -8,7 +8,6 @@ namespace PharmaCheck.EntityFramework.Configurations
     {
         public void Configure(EntityTypeBuilder<MedicineEntity> builder)
         {
-            builder.ToTable("Medicine").HasKey(medicine => medicine.Id);
 
             builder.Property(medicine => medicine.Name)
                 .HasMaxLength(50)
@@ -35,16 +34,8 @@ namespace PharmaCheck.EntityFramework.Configurations
             builder.Property(medicine => medicine.OrderId)
                 .HasColumnName("Order ID");
 
-            builder.Property(medicine => medicine.Order)
-                .HasMaxLength(20)
-                .HasColumnName("Order");
-
             builder.Property(medicine => medicine.PharmacyId)
                 .HasColumnName("Pharmacy ID");
-
-            builder.Property(medicine => medicine.Pharmacy)
-                .HasMaxLength(20)
-                .HasColumnName("Pharmacy");
 
         }
     }

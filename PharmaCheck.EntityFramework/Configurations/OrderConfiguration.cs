@@ -8,14 +8,11 @@ namespace PharmaCheck.EntityFramework.Configurations
     {
         public void Configure(EntityTypeBuilder<OrderEntity> builder)
         {
-            builder.ToTable("Orders").HasKey(order => order.Id);
 
-            builder.Property(order => order.User)
+            builder.Property(order => order.UserId)
                 .HasMaxLength(40)
                 .HasColumnName("User");
 
-            builder.Property(order => order.Medicines)
-                .HasColumnName("Medicines");
         }
     }
 }

@@ -8,7 +8,6 @@ namespace PharmaCheck.EntityFramework.Configurations
     {
         public void Configure(EntityTypeBuilder<UserEntity> builder)
         {
-            builder.ToTable("Users").HasKey(user => user.Id);
 
             builder.Property(user => user.FirstName)
                 .HasMaxLength(40)
@@ -21,9 +20,6 @@ namespace PharmaCheck.EntityFramework.Configurations
             builder.Property(user => user.Phone)
                 .HasMaxLength(12)
                 .HasColumnName("Phone Number");
-
-            builder.Property(user => user.Orders)
-                .HasColumnName("Current Orders");
 
         }
     }
