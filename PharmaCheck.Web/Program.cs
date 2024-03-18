@@ -1,3 +1,4 @@
+using PharmaCheck.EntityFramework; 
 using PharmaCheck.Actors;
 using PharmaCheck.Web.Hubs;
 
