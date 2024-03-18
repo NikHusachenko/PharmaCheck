@@ -1,16 +1,32 @@
 using PharmaCheck.EntityFramework; 
+using PharmaCheck.Actors;
+using PharmaCheck.Web.Hubs;
+
 var builder = WebApplication.CreateBuilder(args);
+var services = builder.Services;
 
-// Add services to the container.
+services.AddControllers();
+services.AddEndpointsApiExplorer();
+services.AddSwaggerGen();
 
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+services.AddCors(config =>
+{
+    config.AddDefaultPolicy(builder =>
+    {
+        builder.WithOrigins("http://127.0.0.1:5500")
+            .AllowAnyHeader()
+            .WithMethods("GET", "POST")
+            .AllowCredentials();
+    });
+});
+
+services.AddSignalR();
+
+services.AddSingleton<ActorService>();
+services.AddHostedService<ActorService>(provider => provider.GetRequiredService<ActorService>());
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -19,10 +35,13 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseCors();
 
 app.MapControllers();
 
-app.Run();
+app.MapHub<MedicineHub>("/MedicineHub");
 
-ApplicationDbContext dbContext = new ApplicationDbContext();
+app.Run();

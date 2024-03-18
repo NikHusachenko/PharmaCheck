@@ -11,7 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\PharmaCheck.Services\PharmaCheck.Services.csproj" />
+    <ProjectReference Include="..\PharmaCheck.Actors\PharmaCheck.Actors.csproj" />
   </ItemGroup>
 
 </Project>
