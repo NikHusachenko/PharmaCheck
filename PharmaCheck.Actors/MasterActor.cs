@@ -15,12 +15,14 @@ public sealed class MasterActor : ReceiveActor
         _medicineActor = Context.ActorOf(Props.Create(() => new MedicineActor()), "medicine");
         _countActor = Context.ActorOf(Props.Create(() => new CartPersistenceActor()), "cart");
 
-        Receive<MedicineDeliveryMessage>(async (message) =>
+        Receive<MedicineDeliveryMessage>(message =>
         {
-            Sender.Tell(await _medicineActor.Ask<ResponseService<Guid>>(message));
+            Sender.Tell(_medicineActor.Ask<ResponseService<Guid>>(message));
         });
 
         Receive<IncrementMessage>(message => _countActor.Tell(message));
         Receive<DecrementMessage>(message => _countActor.Tell(message));
+        Receive<GetStateMessage>(message => _countActor.Forward(message));
+        Receive<SaveStateMessage>(message => _countActor.Tell(message));
     }
 }

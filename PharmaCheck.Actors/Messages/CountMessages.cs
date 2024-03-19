@@ -4,4 +4,6 @@ public class IncrementMessage { }
 
 public class DecrementMessage { }
 
+public class GetStateMessage { }
+
 public class SaveStateMessage { }

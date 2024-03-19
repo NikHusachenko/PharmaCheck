@@ -25,5 +25,14 @@ namespace PharmaCheck.Web.Hubs
                 Id = response.Value
             });
         }
+
+        public async Task Increment() => _masterActor.Tell(new IncrementMessage());
+
+        public async Task Decrement() => _masterActor.Tell(new DecrementMessage());
+
+        public async Task GetStatus()
+        {
+            await Clients.Caller.SendAsync("MedicineDelivery", new { value = await _masterActor.Ask<int>(new GetStateMessage()) });
+        }
     }
 }

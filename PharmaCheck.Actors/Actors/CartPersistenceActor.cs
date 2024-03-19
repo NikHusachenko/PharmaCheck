@@ -24,17 +24,24 @@ public sealed class CartPersistenceActor : PersistentActor
             return true;
         }
 
+        if (message is GetStateMessage state)
+        {
+            Sender.Tell(_count, null);
+            return true;
+        }
+
         return false;
     }
 
     protected override bool ReceiveRecover(object message)
     {
-        if (message is SaveStateMessage saveState)
+        if (message is RecoveryCompleted recovery)
         {
             Persist<int>(_count, (state) =>
             {
                 int a = 10;
             });
+            return true;
         }
 
         return false;
