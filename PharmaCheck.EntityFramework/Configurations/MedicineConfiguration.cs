@@ -8,35 +8,15 @@ namespace PharmaCheck.EntityFramework.Configurations
     {
         public void Configure(EntityTypeBuilder<MedicineEntity> builder)
         {
+            builder.ToTable("Medicines").HasKey(medicine => medicine.Id);
 
-            builder.Property(medicine => medicine.Name)
-                .HasMaxLength(50)
-                .HasColumnName("Medicine Name");
+            builder.HasOne<OrderEntity>(medicine => medicine.Order)
+                .WithMany(order => order.Medicines)
+                .HasForeignKey(medicine => medicine.OrderId);
 
-            builder.Property(medicine => medicine.BuyPrice)
-                .HasMaxLength(10)
-                .HasColumnName("Starting Price");
-
-            builder.Property(medicine => medicine.SellCoefficient)
-                .HasColumnName("Sell Coefficient");
-
-            builder.Property(medicine => medicine.Description)
-                .HasMaxLength(500)
-                .HasColumnName("Description");
-
-            builder.Property(medicine => medicine.Instruction)
-                .HasMaxLength(500)
-                .HasColumnName("Instruction");
-
-            builder.Property(medicine => medicine.Type)
-                .HasColumnName("Medicine Type");
-
-            builder.Property(medicine => medicine.OrderId)
-                .HasColumnName("Order ID");
-
-            builder.Property(medicine => medicine.PharmacyId)
-                .HasColumnName("Pharmacy ID");
-
+            builder.HasOne<PharmacyEntity>(medicine => medicine.Pharmacy)
+                .WithMany(pharmacy => pharmacy.Medicines)
+                .HasForeignKey(medicine => medicine.PharmacyId);
         }
     }
 }
