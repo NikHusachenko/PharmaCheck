@@ -1,49 +1,65 @@
 ﻿using Akka.Persistence;
+using Akka.Persistence.Snapshot;
 using PharmaCheck.Actors.Messages;
 
 namespace PharmaCheck.Actors.Actors;
 
-public sealed class CartPersistenceActor : PersistentActor
+public sealed class CartPersistenceActor : UntypedPersistentActor
 {
-    private int _count = 0;
+    private const int DEFAULT_COUNTER_STATE = 0;
+    private int _count = DEFAULT_COUNTER_STATE;
 
-    public override string PersistenceId => "cart";
+    public override string PersistenceId => Context.Self.Path.Name;
 
-
-    protected override bool ReceiveCommand(object message)
+    protected override void OnCommand(object message)
     {
+        if (message is LoadSnapshotResult result)
+        {
+            if (result.Snapshot != null)
+            {
+                _count = (int)result.Snapshot.Snapshot;
+            }
+        }
+
         if (message is IncrementMessage increment)
         {
             _count++;
-            return true;
+            return;
         }
 
         if (message is DecrementMessage decrement)
         {
             _count--;
-            return true;
+            return;
         }
 
-        if (message is GetStateMessage state)
+        if (message is SaveStateMessage saveState)
         {
-            Sender.Tell(_count, null);
-            return true;
+            SaveSnapshot(_count);
+            return;
         }
 
-        return false;
+        if (message is GetStateMessage getState)
+        {
+            Sender.Tell(_count, Context.Self);
+            return;
+        }
+
+        if (message is ClearStateMessage clearState)
+        {
+            DeleteSnapshots(new SnapshotSelectionCriteria(LastSequenceNr));
+            return;
+        }
+
+        if (message is DeleteSnapshotsSuccess deleteSnapshotsSuccess)
+        {
+            _count = DEFAULT_COUNTER_STATE;
+            return;
+        }
     }
 
-    protected override bool ReceiveRecover(object message)
+    protected override void OnRecover(object message)
     {
-        if (message is RecoveryCompleted recovery)
-        {
-            Persist<int>(_count, (state) =>
-            {
-                int a = 10;
-            });
-            return true;
-        }
-
-        return false;
+        LoadSnapshot(PersistenceId, new SnapshotSelectionCriteria(LastSequenceNr), LastSequenceNr);
     }
 }

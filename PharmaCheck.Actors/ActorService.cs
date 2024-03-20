@@ -1,5 +1,6 @@
 ﻿using Akka.Actor;
 using Akka.Actor.Setup;
+using Akka.Configuration;
 using Akka.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
@@ -31,6 +32,15 @@ public sealed class ActorService : IHostedService
     public async Task StartAsync(CancellationToken cancellationToken)
     {
         BootstrapSetup setup = BootstrapSetup.Create();
+
+/*        Config config = ConfigurationFactory.ParseString(@"
+            akka {
+                actor {
+                    provider = ""Akka.Actor.LocalActorRefProvider""
+                }
+            }
+        ");*/
+
         DependencyResolverSetup diResolver = DependencyResolverSetup.Create(_serviceProvider);
         ActorSystemSetup systemSetup = setup.And(diResolver);
 

@@ -24,5 +24,6 @@ public sealed class MasterActor : ReceiveActor
         Receive<DecrementMessage>(message => _countActor.Tell(message));
         Receive<GetStateMessage>(message => _countActor.Forward(message));
         Receive<SaveStateMessage>(message => _countActor.Tell(message));
+        Receive<ClearStateMessage>(message => _countActor.Tell(message));
     }
 }

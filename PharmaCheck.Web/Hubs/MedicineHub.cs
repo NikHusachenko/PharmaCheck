@@ -34,5 +34,9 @@ namespace PharmaCheck.Web.Hubs
         {
             await Clients.Caller.SendAsync("MedicineDelivery", new { value = await _masterActor.Ask<int>(new GetStateMessage()) });
         }
+
+        public async Task SaveStatus() => _masterActor.Tell(new SaveStateMessage());
+
+        public async Task ClearStatus() => _masterActor.Tell(new ClearStateMessage());
     }
 }
