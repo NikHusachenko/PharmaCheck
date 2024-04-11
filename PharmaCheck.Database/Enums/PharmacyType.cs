@@ -2,6 +2,6 @@
 
 public enum PharmacyType
 {
-    Drugstore = 1,
-    Warehouse = 2,
+    Warehouse = 1,
+    PhysicPoint = 2,
 }

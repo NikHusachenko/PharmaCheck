@@ -1,14 +1,13 @@
-﻿using PharmaCheck.Database.Entities;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using PharmaCheck.Database.Entities;
 
-namespace PharmaCheck.EntityFramework.Configurations
+namespace PharmaCheck.EntityFramework.Configurations;
+
+public class PharmacyConfiguration : IEntityTypeConfiguration<PharmacyEntity>
 {
-    public class PharmacyConfiguration : IEntityTypeConfiguration<PharmacyEntity>
+    public void Configure(EntityTypeBuilder<PharmacyEntity> builder)
     {
-        public void Configure(EntityTypeBuilder<PharmacyEntity> builder)
-        {
-            builder.ToTable("Pharmacies").HasKey(pharmacy => pharmacy.Id);
-        }
+        builder.ToTable("Pharmacies").HasKey(pharmacy => pharmacy.Id);
     }
 }

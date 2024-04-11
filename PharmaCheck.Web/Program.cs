@@ -1,7 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using PharmaCheck.Actors;
 using PharmaCheck.EntityFramework;
-using PharmaCheck.Web.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
@@ -23,10 +21,7 @@ services.AddCors(config =>
 
 services.AddSignalR();
 
-services.AddDbContext<ApplicationDbContext>(options => options.UseNpgsql("Server=127.0.0.1;Host=localhost;Database=PharmacyDb;Port=5432;username=postgres;password=admin"));
-
-services.AddSingleton<ActorService>();
-services.AddHostedService<ActorService>(provider => provider.GetRequiredService<ActorService>());
+services.AddDbContext<ApplicationDbContext>(options => options.UseNpgsql(builder.Configuration.GetSection("ConnectionStrings:DefaultConnection").Value));
 
 var app = builder.Build();
 
@@ -44,7 +39,5 @@ app.UseAuthorization();
 app.UseCors();
 
 app.MapControllers();
-
-app.MapHub<MedicineHub>("/MedicineHub");
 
 app.Run();
