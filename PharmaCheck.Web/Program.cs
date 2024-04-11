@@ -1,5 +1,8 @@
 using Microsoft.EntityFrameworkCore;
+using Npgsql;
 using PharmaCheck.EntityFramework;
+using PharmaCheck.EntityFramework.Repositories.Factories;
+using PharmaCheck.Services.ProductTypeServices;
 
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
@@ -21,7 +24,18 @@ services.AddCors(config =>
 
 services.AddSignalR();
 
-services.AddDbContext<ApplicationDbContext>(options => options.UseNpgsql(builder.Configuration.GetSection("ConnectionStrings:DefaultConnection").Value));
+services.AddDbContext<ApplicationDbContext>(options =>
+{
+    string? connectionString = builder.Configuration.GetSection("ConnectionStrings:DefaultConnection").Value;
+    if (string.IsNullOrEmpty(connectionString))
+    {
+        throw new NpgsqlException("Connection string is unavailable");
+    }
+    options.UseNpgsql(connectionString!);
+});
+services.AddScoped<IRepositoryFactory, RepositoryFactory>();
+
+services.AddTransient<IProductTypeService, ProductTypeService>();
 
 var app = builder.Build();
 

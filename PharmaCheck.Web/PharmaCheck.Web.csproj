@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\PharmaCheck.EntityFramework\PharmaCheck.EntityFramework.csproj" />
+    <ProjectReference Include="..\PharmaCheck.Services\PharmaCheck.Services.csproj" />
   </ItemGroup>
 
 </Project>
