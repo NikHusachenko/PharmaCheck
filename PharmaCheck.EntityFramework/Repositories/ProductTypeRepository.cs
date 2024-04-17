@@ -3,7 +3,7 @@ using PharmaCheck.Database.Entities;
 
 namespace PharmaCheck.EntityFramework.Repositories;
 
-public sealed class ProductTypeRepository
+public sealed class ProductTypeRepository : IRepository<ProductTypeEntity>
 {
     private readonly ApplicationDbContext _dbContext;
     private readonly DbSet<ProductTypeEntity> _table;
@@ -16,12 +16,21 @@ public sealed class ProductTypeRepository
 
     public async Task Create(ProductTypeEntity entity)
     {
+        entity.CreatedAt = DateTime.Now.ToUniversalTime();
+        entity.UpdatedAt = DateTime.Now.ToUniversalTime();
+
         await _table.AddAsync(entity);
         await _dbContext.SaveChangesAsync();
     }
 
-    public async Task<ProductTypeEntity?> GetById(Guid id)
+    public async Task Delete(ProductTypeEntity entity)
     {
-        return await _table.FindAsync(id);
+        entity.DeletedAt = DateTime.Now.ToUniversalTime();
+
+        _table.Update(entity);
+        await _dbContext.SaveChangesAsync();
     }
+
+    public async Task<ProductTypeEntity?> GetById(Guid id) =>
+        await _table.FirstOrDefaultAsync(entity => entity.Id == id);
 }

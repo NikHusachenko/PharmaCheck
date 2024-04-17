@@ -8,18 +8,18 @@ public sealed class Result
     public string ErrorMessage { get; set; } = string.Empty;
     public HttpStatusCode StatusCode { get; set; }
 
-    public static Result Ok(HttpStatusCode statusCode) =>
+    public static Result Ok(ResultSuccessStatusCode statusCode) =>
         new()
         {
-            StatusCode = statusCode
+            StatusCode = (HttpStatusCode)statusCode
         };
 
-    public static Result Error(string errorMessage, HttpStatusCode statusCode) =>
+    public static Result Error(string errorMessage, ResultErrorStatusCode statusCode) =>
         new()
         {
             ErrorMessage = errorMessage,
             IsError = true,
-            StatusCode = statusCode
+            StatusCode = (HttpStatusCode)statusCode
         };
 }
 
@@ -30,18 +30,18 @@ public sealed class Result<T>
     public T Value { get; set; }
     public HttpStatusCode StatusCode { get; set; }
 
-    public static Result<T> Ok(T value, HttpStatusCode statusCode) =>
+    public static Result<T> Ok(T value, ResultSuccessStatusCode statusCode) =>
         new()
         {
             Value = value,
-            StatusCode = statusCode,
+            StatusCode = (HttpStatusCode)statusCode,
         };
 
-    public static Result<T> Error(string errorMessage, HttpStatusCode statusCode) =>
+    public static Result<T> Error(string errorMessage, ResultErrorStatusCode statusCode) =>
         new()
         {
             ErrorMessage = errorMessage,
             IsError = true,
-            StatusCode = statusCode
+            StatusCode = (HttpStatusCode)statusCode
         };
 }

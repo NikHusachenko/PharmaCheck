@@ -23,6 +23,7 @@ services.AddCors(config =>
 });
 
 services.AddSignalR();
+services.AddMediatR(config => config.RegisterServicesFromAssembly(typeof(Program).Assembly));
 
 services.AddDbContext<ApplicationDbContext>(options =>
 {
