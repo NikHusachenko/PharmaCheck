@@ -16,6 +16,7 @@ public sealed class ProductTypeRepository : IRepository<ProductTypeEntity>
 
     public async Task Create(ProductTypeEntity entity)
     {
+        entity.Id = Guid.NewGuid();
         entity.CreatedAt = DateTime.Now.ToUniversalTime();
         entity.UpdatedAt = DateTime.Now.ToUniversalTime();
 
@@ -32,5 +33,6 @@ public sealed class ProductTypeRepository : IRepository<ProductTypeEntity>
     }
 
     public async Task<ProductTypeEntity?> GetById(Guid id) =>
-        await _table.FirstOrDefaultAsync(entity => entity.Id == id);
+        await _table.FirstOrDefaultAsync(entity => entity.Id == id &&
+            !entity.DeletedAt.HasValue);
 }

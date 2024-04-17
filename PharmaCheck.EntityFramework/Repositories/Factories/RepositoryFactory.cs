@@ -10,4 +10,5 @@ public sealed class RepositoryFactory : IRepositoryFactory
     }
 
     public ProductTypeRepository NewProductTypeRepository() => new(_dbContext);
+    public CategoryRepository NewCategoryRepository() => new(_dbContext);
 }

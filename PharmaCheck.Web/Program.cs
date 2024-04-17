@@ -1,8 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using Npgsql;
+using PharmaCheck.Domain.Category.GetCategories;
 using PharmaCheck.EntityFramework;
 using PharmaCheck.EntityFramework.Repositories.Factories;
-using PharmaCheck.Services.ProductTypeServices;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
@@ -23,7 +24,7 @@ services.AddCors(config =>
 });
 
 services.AddSignalR();
-services.AddMediatR(config => config.RegisterServicesFromAssembly(typeof(Program).Assembly));
+services.AddMediatR(config => config.RegisterServicesFromAssembly(typeof(GetCategoriesRequestHandler).Assembly));
 
 services.AddDbContext<ApplicationDbContext>(options =>
 {
@@ -35,8 +36,6 @@ services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(connectionString!);
 });
 services.AddScoped<IRepositoryFactory, RepositoryFactory>();
-
-services.AddTransient<IProductTypeService, ProductTypeService>();
 
 var app = builder.Build();
 
