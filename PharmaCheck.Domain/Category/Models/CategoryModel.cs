@@ -1,4 +1,4 @@
-﻿namespace PharmaCheck.Domain.Category.GetCategories;
+﻿namespace PharmaCheck.Domain.Category.Models;
 
 public sealed record CategoryModel
 {

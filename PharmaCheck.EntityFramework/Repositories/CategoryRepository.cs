@@ -32,6 +32,14 @@ public sealed class CategoryRepository : IRepository<CategoryEntity>
         await _dbContext.SaveChangesAsync();
     }
 
+    public async Task Update(CategoryEntity entity)
+    {
+        entity.UpdatedAt = DateTimeOffset.Now.ToUniversalTime();
+
+        _table.Update(entity);
+        await _dbContext.SaveChangesAsync();
+    }
+
     public async Task<CategoryEntity?> GetById(Guid id) => 
         await _table.FirstOrDefaultAsync(entity => entity.Id == id &&
             !entity.DeletedAt.HasValue);
@@ -40,4 +48,8 @@ public sealed class CategoryRepository : IRepository<CategoryEntity>
         await _table.Where(category => category.Name.Contains(query) &&
             !category.DeletedAt.HasValue)
         .ToListAsync();
+
+    public async Task<CategoryEntity?> GetByName(string name) =>
+        await _table.FirstOrDefaultAsync(category => category.Name == name &&
+            !category.DeletedAt.HasValue);
 }

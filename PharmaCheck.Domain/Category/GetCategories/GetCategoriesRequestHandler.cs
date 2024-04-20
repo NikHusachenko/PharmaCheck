@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using PharmaCheck.Domain.Category.Models;
 using PharmaCheck.EntityFramework.Repositories;
 using PharmaCheck.EntityFramework.Repositories.Factories;
 using PharmaCheck.Utilities.Extensions;

@@ -18,6 +18,7 @@
     <ProjectReference Include="..\PharmaCheck.Domain\PharmaCheck.Domain.csproj" />
     <ProjectReference Include="..\PharmaCheck.EntityFramework\PharmaCheck.EntityFramework.csproj" />
     <ProjectReference Include="..\PharmaCheck.Services\PharmaCheck.Services.csproj" />
+    <ProjectReference Include="..\PharmaCheck.Utilities\PharmaCheck.Utilities.csproj" />
   </ItemGroup>
 
 </Project>
