@@ -32,7 +32,32 @@ public sealed class ProductTypeRepository : IRepository<ProductTypeEntity>
         await _dbContext.SaveChangesAsync();
     }
 
+    public async Task Update(ProductTypeEntity entity)
+    {
+        entity.UpdatedAt = DateTimeOffset.Now.ToUniversalTime();
+
+        _table.Update(entity);
+        await _dbContext.SaveChangesAsync();
+    }
+
     public async Task<ProductTypeEntity?> GetById(Guid id) =>
         await _table.FirstOrDefaultAsync(entity => entity.Id == id &&
             !entity.DeletedAt.HasValue);
+
+    public async Task<ProductTypeEntity?> GetByName(string name) =>
+        await _table.FirstOrDefaultAsync(entity => entity.Name == name &&
+            !entity.DeletedAt.HasValue);
+
+    public async Task<List<ProductTypeEntity>> GetAll(int skip,
+        int take,
+        string queryName,
+        Guid categoryId) =>
+        await _table.Where(type => 
+            type.CategoryId == categoryId &&
+            type.Name.Contains(queryName) &&
+            !type.DeletedAt.HasValue)
+                .Skip(skip)
+                .Take(take)
+                .Include(type => type.Category)
+                .ToListAsync();
 }

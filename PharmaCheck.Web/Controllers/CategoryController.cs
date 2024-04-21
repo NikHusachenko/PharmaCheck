@@ -15,7 +15,7 @@ namespace PharmaCheck.Web.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class CategoryController(
+public sealed class CategoryController(
     IMediator mediator)
     : ControllerBase
 {
@@ -27,29 +27,29 @@ public class CategoryController(
                 Ok(result.Value));
 
     [HttpGet("get/all")]
-    public async Task<IActionResult> GetAll([FromQuery] GetCategoriesFilterModel filter) =>
-        await mediator.Send(new GetCategoriesRequest(filter.NameQuery))
+    public async Task<IActionResult> Get([FromQuery] GetCategoriesFilterModel filter) =>
+        await mediator.Send(new GetCategoriesRequest(filter.Page, filter.NameQuery))
             .Map<IEnumerable<CategoryModel>, IActionResult>(response => 
-                response.Any() ? Ok(response) : NotFound());
+                response.Any() ? Ok(response) : NoContent());
 
     [HttpGet("get/{name}")]
     public async Task<IActionResult> GetByName([FromRoute] string name) =>
         await mediator.Send(new GetCategoryByNameRequest(name))
             .Map(result => result.IsError ? 
                 StatusCode((int)result.StatusCode, ControllerResponse.ToErrorResult(result.ErrorMessage)) : 
-                StatusCode((int)result.StatusCode, result.Value));
+                Ok(result.Value));
 
     [HttpGet("get/{id:guid}")]
     public async Task<IActionResult> GetById([FromRoute] Guid id) =>
         await mediator.Send(new GetCategoryByIdRequest(id))
             .Map<Result<CategoryModel>, IActionResult>(result => result.IsError ?
                 StatusCode((int)result.StatusCode, ControllerResponse.ToErrorResult(result.ErrorMessage)) :
-                StatusCode((int)result.StatusCode, result.Value));
+                Ok(result.Value));
 
     [HttpPut("{id:guid}")]
     public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] string name) =>
         await mediator.Send(new UpdateCategoryRequest(id, name))
             .Map<Result, IActionResult>(response => response.IsError ?
-                NoContent() :
-                StatusCode((int)response.StatusCode, ControllerResponse.ToErrorResult(response.ErrorMessage)));
+                StatusCode((int)response.StatusCode, ControllerResponse.ToErrorResult(response.ErrorMessage)) :
+                NoContent());
 }

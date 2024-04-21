@@ -44,9 +44,11 @@ public sealed class CategoryRepository : IRepository<CategoryEntity>
         await _table.FirstOrDefaultAsync(entity => entity.Id == id &&
             !entity.DeletedAt.HasValue);
 
-    public async Task<List<CategoryEntity>> GetAll(string query) =>
+    public async Task<List<CategoryEntity>> GetAll(int skip, int take, string query) =>
         await _table.Where(category => category.Name.Contains(query) &&
             !category.DeletedAt.HasValue)
+        .Skip(skip)
+        .Take(take)
         .ToListAsync();
 
     public async Task<CategoryEntity?> GetByName(string name) =>
