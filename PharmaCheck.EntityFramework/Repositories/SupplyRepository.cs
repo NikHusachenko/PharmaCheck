@@ -32,8 +32,8 @@ public sealed class SupplyRepository : IRepository<SupplyEntity>
         await _dbContext.SaveChangesAsync();
     }
 
-    public Task<SupplyEntity?> GetById(Guid supplierId, Guid id) =>
-        _table
+    public async Task<SupplyEntity?> GetById(Guid supplierId, Guid id) =>
+        await _table
             .Include(entity => entity.Products)
                 .ThenInclude(product => product.Category)
             .Include(entity => entity.Products)
@@ -41,4 +41,16 @@ public sealed class SupplyRepository : IRepository<SupplyEntity>
             .FirstOrDefaultAsync(entity => entity.Id == id &&
                 entity.SupplierId == supplierId &&
                 !entity.DeletedAt.HasValue);
+
+    public async Task<List<SupplyEntity>> GetAll(Guid supplierId) =>
+        await _table
+            .Include(entity => entity.Products)
+                .ThenInclude(product => product.Category)
+            .Include(entity => entity.Products)
+                .ThenInclude(product => product.ProductType)
+            .Include(entity => entity.Products)
+                .ThenInclude(product => product.Pharmacy)
+            .Where(entity => entity.SupplierId == supplierId &&
+                !entity.DeletedAt.HasValue)
+            .ToListAsync();
 }
