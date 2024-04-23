@@ -21,5 +21,9 @@ public sealed class ProductConfiguration : IEntityTypeConfiguration<ProductEntit
         builder.HasOne<CategoryEntity>(product => product.Category)
             .WithMany(category => category.Products)
             .HasForeignKey(product => product.CategoryId);
+
+        builder.HasOne<ProductTypeEntity>(product => product.ProductType)
+            .WithMany(type => type.Products)
+            .HasForeignKey(product => product.TypeId);
     }
 }

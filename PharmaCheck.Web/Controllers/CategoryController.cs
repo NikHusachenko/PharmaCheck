@@ -4,8 +4,8 @@ using PharmaCheck.Domain.Category.CreateCategory;
 using PharmaCheck.Domain.Category.GetCategories;
 using PharmaCheck.Domain.Category.GetCategoryById;
 using PharmaCheck.Domain.Category.GetCategoryByName;
-using PharmaCheck.Domain.Category.Models;
 using PharmaCheck.Domain.Category.UpdateCategory;
+using PharmaCheck.Domain.Models;
 using PharmaCheck.Services.Response;
 using PharmaCheck.Utilities.Extensions;
 using PharmaCheck.Web.Infrastructure;
@@ -13,17 +13,15 @@ using PharmaCheck.Web.Models.Category;
 
 namespace PharmaCheck.Web.Controllers;
 
-[Route("api/[controller]")]
+[Route("api/category")]
 [ApiController]
-public sealed class CategoryController(
-    IMediator mediator)
-    : ControllerBase
+public sealed class CategoryController(IMediator mediator) : ControllerBase
 {
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] CreateCategoryModel model) =>
         await mediator.Send(new CreateCategoryRequest(model.Name))
             .Map<Result<Guid>, IActionResult>(result => result.IsError ?
-                BadRequest(ControllerResponse.ToErrorResult(result.ErrorMessage)) :
+                StatusCode((int)result.StatusCode, ControllerResponse.ToErrorResult(result.ErrorMessage)) :
                 Ok(result.Value));
 
     [HttpGet("get/all")]
@@ -35,16 +33,14 @@ public sealed class CategoryController(
     [HttpGet("get/{name}")]
     public async Task<IActionResult> GetByName([FromRoute] string name) =>
         await mediator.Send(new GetCategoryByNameRequest(name))
-            .Map(result => result.IsError ? 
-                StatusCode((int)result.StatusCode, ControllerResponse.ToErrorResult(result.ErrorMessage)) : 
-                Ok(result.Value));
+            .Map<Result<CategoryModel>, IActionResult>(result => 
+                result.IsError ? NoContent() : Ok(result.Value));
 
     [HttpGet("get/{id:guid}")]
     public async Task<IActionResult> GetById([FromRoute] Guid id) =>
         await mediator.Send(new GetCategoryByIdRequest(id))
-            .Map<Result<CategoryModel>, IActionResult>(result => result.IsError ?
-                StatusCode((int)result.StatusCode, ControllerResponse.ToErrorResult(result.ErrorMessage)) :
-                Ok(result.Value));
+            .Map<Result<CategoryModel>, IActionResult>(result => 
+                result.IsError ? NoContent() : Ok(result.Value));
 
     [HttpPut("{id:guid}")]
     public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] string name) =>

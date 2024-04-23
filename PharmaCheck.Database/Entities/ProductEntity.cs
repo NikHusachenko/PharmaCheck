@@ -2,9 +2,9 @@
 
 public sealed record ProductEntity : BaseEntity
 {
-    public string Name { get; set; }
-    public string Description { get; set; }
-    public string Manufacturer { get; set; }
+    public string Name { get; set; } = string.Empty;
+    public string Description { get; set; } = string.Empty;
+    public string Manufacturer { get; set; } = string.Empty;
     public float Price { get; set; }
     public int Count { get; set; }
 
@@ -16,4 +16,7 @@ public sealed record ProductEntity : BaseEntity
 
     public Guid CategoryId { get; set; }
     public CategoryEntity Category { get; set; }
+
+    public Guid TypeId { get; set; }
+    public ProductTypeEntity ProductType { get; set; }
 }

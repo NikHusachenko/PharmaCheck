@@ -3,4 +3,4 @@ using PharmaCheck.Services.Response;
 
 namespace PharmaCheck.Domain.ProductType.UpdateProductTypeName;
 
-public sealed record UpdateProductTypeNameRequest(Guid Id, string NewName) : IRequest<Result>;
+public sealed record UpdateProductTypeNameRequest(Guid CategoryId, Guid Id, string NewName) : IRequest<Result>;

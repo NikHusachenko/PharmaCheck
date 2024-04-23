@@ -1,6 +1,5 @@
 ﻿using MediatR;
-using PharmaCheck.Domain.Category.Models;
-using PharmaCheck.Domain.ProductType.Models;
+using PharmaCheck.Domain.Models;
 using PharmaCheck.EntityFramework.Repositories;
 using PharmaCheck.EntityFramework.Repositories.Factories;
 using PharmaCheck.Services.Response;
@@ -14,7 +13,7 @@ public sealed class GetProductTypeByIdRequestHandler(IRepositoryFactory factory)
     public async Task<Result<ProductTypeModel>> Handle(GetProductTypeByIdRequest request, CancellationToken cancellationToken)
     {
         ProductTypeRepository repository = factory.NewProductTypeRepository();
-        return await repository.GetById(request.Id)
+        return await repository.GetById(request.CategoryId, request.Id)
             .Map(entity => entity is null ?
                 Result<ProductTypeModel>.Error("Product type not found.", ResultErrorStatusCode.NotFound) :
                 Result<ProductTypeModel>.Ok(new ProductTypeModel()

@@ -70,10 +70,6 @@ namespace PharmaCheck.EntityFramework.Migrations
                     b.Property<DateTimeOffset?>("DeletedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("LocalCode")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
@@ -136,6 +132,9 @@ namespace PharmaCheck.EntityFramework.Migrations
                     b.Property<Guid>("SupplyId")
                         .HasColumnType("uuid");
 
+                    b.Property<Guid>("TypeId")
+                        .HasColumnType("uuid");
+
                     b.Property<DateTimeOffset>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
@@ -146,6 +145,8 @@ namespace PharmaCheck.EntityFramework.Migrations
                     b.HasIndex("PharmacyId");
 
                     b.HasIndex("SupplyId");
+
+                    b.HasIndex("TypeId");
 
                     b.ToTable("Products", (string)null);
                 });
@@ -265,9 +266,17 @@ namespace PharmaCheck.EntityFramework.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("PharmaCheck.Database.Entities.ProductTypeEntity", "ProductType")
+                        .WithMany("Products")
+                        .HasForeignKey("TypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Category");
 
                     b.Navigation("Pharmacy");
+
+                    b.Navigation("ProductType");
 
                     b.Navigation("Supply");
                 });
@@ -302,6 +311,11 @@ namespace PharmaCheck.EntityFramework.Migrations
                 });
 
             modelBuilder.Entity("PharmaCheck.Database.Entities.PharmacyEntity", b =>
+                {
+                    b.Navigation("Products");
+                });
+
+            modelBuilder.Entity("PharmaCheck.Database.Entities.ProductTypeEntity", b =>
                 {
                     b.Navigation("Products");
                 });

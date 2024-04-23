@@ -40,18 +40,19 @@ public sealed class ProductTypeRepository : IRepository<ProductTypeEntity>
         await _dbContext.SaveChangesAsync();
     }
 
-    public async Task<ProductTypeEntity?> GetById(Guid id) =>
-        await _table.FirstOrDefaultAsync(entity => entity.Id == id &&
+    public async Task<ProductTypeEntity?> GetById(Guid categoryId, Guid id) =>
+        await _table
+            .FirstOrDefaultAsync(entity => entity.Id == id &&
+            entity.CategoryId == categoryId &&
             !entity.DeletedAt.HasValue);
 
-    public async Task<ProductTypeEntity?> GetByName(string name) =>
-        await _table.FirstOrDefaultAsync(entity => entity.Name == name &&
+    public async Task<ProductTypeEntity?> GetByName(Guid categoryId, string name) =>
+        await _table
+            .FirstOrDefaultAsync(entity => entity.Name == name &&
+            entity.CategoryId == categoryId &&
             !entity.DeletedAt.HasValue);
 
-    public async Task<List<ProductTypeEntity>> GetAll(int skip,
-        int take,
-        string queryName,
-        Guid categoryId) =>
+    public async Task<List<ProductTypeEntity>> GetAll(int skip, int take, string queryName, Guid categoryId) =>
         await _table.Where(type => 
             type.CategoryId == categoryId &&
             type.Name.Contains(queryName) &&

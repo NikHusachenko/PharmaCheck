@@ -41,17 +41,21 @@ public sealed class CategoryRepository : IRepository<CategoryEntity>
     }
 
     public async Task<CategoryEntity?> GetById(Guid id) => 
-        await _table.FirstOrDefaultAsync(entity => entity.Id == id &&
-            !entity.DeletedAt.HasValue);
+        await _table
+            .Include(entity => entity.Products)
+            .FirstOrDefaultAsync(entity => entity.Id == id &&
+                !entity.DeletedAt.HasValue);
 
     public async Task<List<CategoryEntity>> GetAll(int skip, int take, string query) =>
         await _table.Where(category => category.Name.Contains(query) &&
             !category.DeletedAt.HasValue)
-        .Skip(skip)
-        .Take(take)
-        .ToListAsync();
+            .Skip(skip)
+            .Take(take)
+            .ToListAsync();
 
     public async Task<CategoryEntity?> GetByName(string name) =>
-        await _table.FirstOrDefaultAsync(category => category.Name == name &&
-            !category.DeletedAt.HasValue);
+        await _table
+            .Include(entity => entity.Products)
+            .FirstOrDefaultAsync(category => category.Name == name &&
+                !category.DeletedAt.HasValue);
 }

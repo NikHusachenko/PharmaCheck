@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using PharmaCheck.Domain.Category.Models;
+using PharmaCheck.Domain.Models;
 using PharmaCheck.Services.Response;
 
 namespace PharmaCheck.Domain.Category.GetCategoryById;

@@ -1,6 +1,5 @@
 ﻿using MediatR;
-using PharmaCheck.Domain.Category.Models;
-using PharmaCheck.Domain.ProductType.Models;
+using PharmaCheck.Domain.Models;
 using PharmaCheck.EntityFramework.Repositories;
 using PharmaCheck.EntityFramework.Repositories.Factories;
 using PharmaCheck.Utilities.Extensions;
@@ -16,7 +15,7 @@ public sealed class GetProductTypesRequestHandler(IRepositoryFactory repositoryF
     {
         ProductTypeRepository repository = repositoryFactory.NewProductTypeRepository();
 
-        int skip = request.Page <= 0 ? 1 : PAGE_VOLUME * (request.Page - 1);
+        int skip = request.Page <= 0 ? 0 : PAGE_VOLUME * (request.Page - 1);
         return await repository.GetAll(skip, PAGE_VOLUME, request.QueryName, request.CategoryId).Map(type => new ProductTypeModel()
         {
             Category = new CategoryModel()

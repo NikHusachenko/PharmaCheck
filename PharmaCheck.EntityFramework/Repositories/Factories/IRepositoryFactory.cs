@@ -4,4 +4,7 @@ public interface IRepositoryFactory
 {
     ProductTypeRepository NewProductTypeRepository();
     CategoryRepository NewCategoryRepository();
+    SupplyRepository NewSupplyRepository();
+    SupplierRepository NewSupplierRepository();
+    PharmacyRepository NewPharmacyRepository();
 }

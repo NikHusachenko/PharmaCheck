@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using PharmaCheck.Domain.Category.Models;
+using PharmaCheck.Domain.Models;
 using PharmaCheck.EntityFramework.Repositories;
 using PharmaCheck.EntityFramework.Repositories.Factories;
 using PharmaCheck.Utilities.Extensions;
@@ -15,7 +15,7 @@ public sealed class GetCategoriesRequestHandler(IRepositoryFactory factory)
     {
         CategoryRepository repository = factory.NewCategoryRepository();
 
-        int skip = request.Page <= 0 ? 1 : PAGE_VOLUME * (request.Page - 1);
+        int skip = request.Page <= 0 ? 0 : PAGE_VOLUME * (request.Page - 1);
         return await repository.GetAll(skip, PAGE_VOLUME, request.Query).Map(category => new CategoryModel()
         {
             Id = category.Id,

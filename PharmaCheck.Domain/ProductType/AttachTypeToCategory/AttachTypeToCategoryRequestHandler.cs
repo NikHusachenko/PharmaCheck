@@ -16,7 +16,7 @@ public sealed class AttachTypeToCategoryRequestHandler(
     {
         ProductTypeRepository repository = repositoryFactory.NewProductTypeRepository();
 
-        ProductTypeEntity? entity = await repository.GetById(request.TypeId);
+        ProductTypeEntity? entity = await repository.GetById(request.CategoryId, request.TypeId);
         if (entity is null)
         {
             return Result.Error("Product type not found.", ResultErrorStatusCode.NotFound);

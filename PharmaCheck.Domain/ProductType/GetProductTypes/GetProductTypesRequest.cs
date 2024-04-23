@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using PharmaCheck.Domain.ProductType.Models;
+using PharmaCheck.Domain.Models;
 
 namespace PharmaCheck.Domain.ProductType.GetProductTypes;
 
