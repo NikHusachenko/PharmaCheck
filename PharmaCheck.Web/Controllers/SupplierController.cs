@@ -5,7 +5,6 @@ using PharmaCheck.Domain.Supplier.CreateSupplier;
 using PharmaCheck.Domain.Supplier.GetSuppliers;
 using PharmaCheck.Utilities.Extensions;
 using PharmaCheck.Web.Infrastructure;
-using PharmaCheck.Web.Models.Supplier;
 
 namespace PharmaCheck.Web.Controllers;
 
@@ -14,27 +13,15 @@ namespace PharmaCheck.Web.Controllers;
 public class SupplierController(IMediator mediator) : ControllerBase
 {
     [HttpPost("new")]
-    public async Task<IActionResult> New([FromBody] NewSupplierHttpPostModel model) =>
-        await mediator.Send(new CreateSupplierRequest(
-            model.Name,
-            model.Region,
-            model.City,
-            model.Street,
-            model.AdditionAddress,
-            model.ContactPhone))
+    public async Task<IActionResult> New([FromBody] CreateSupplierRequest request) =>
+        await mediator.Send(request)
             .Map(result => result.IsError ?
                 StatusCode((int)result.StatusCode, ControllerResponse.ToErrorResult(result.ErrorMessage)) :
                 Ok(result.Value));
 
     [HttpGet("get/all")]
-    public async Task<IActionResult> GetAll([FromQuery] GetSuppliersFilter filter) =>
-        await mediator.Send(new GetSuppliersRequest(filter.Page,
-            filter.NameQuery,
-            filter.RegionQuery,
-            filter.CityQuery,
-            filter.StreetQuery,
-            filter.AdditionAddressQuery,
-            filter.ContactPhoneQuery))
+    public async Task<IActionResult> GetAll([FromQuery] GetSuppliersRequest request) =>
+        await mediator.Send(request)
             .Map<List<SupplierModel>, IActionResult>(list => list.Any() ? Ok(list) : NoContent());
 
     // TODO

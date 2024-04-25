@@ -8,7 +8,7 @@ using PharmaCheck.Domain.ProductType.GetProductTypes;
 using PharmaCheck.Services.Response;
 using PharmaCheck.Utilities.Extensions;
 using PharmaCheck.Web.Infrastructure;
-using PharmaCheck.Web.Models.ProductType;
+using PharmaCheck.Web.Models.CategoryType;
 
 namespace PharmaCheck.Web.Controllers;
 
@@ -17,7 +17,7 @@ namespace PharmaCheck.Web.Controllers;
 public sealed class ProductTypeController(IMediator mediator) : ControllerBase
 {
     [HttpPost]
-    public async Task<IActionResult> Create([FromRoute] Guid categoryId, [FromBody] CreateProductTypeHttpPostModel model) =>
+    public async Task<IActionResult> Create([FromRoute] Guid categoryId, [FromBody] CreateProductTypeModel model) =>
         await mediator.Send(new CreateProductTypeRequest(categoryId, model.Name))
             .Map<Result<Guid>, IActionResult>(result => result.IsError ?
                 StatusCode((int)result.StatusCode, ControllerResponse.ToErrorResult(result.ErrorMessage)) :
@@ -26,7 +26,7 @@ public sealed class ProductTypeController(IMediator mediator) : ControllerBase
     [HttpGet("get/all")]
     public async Task<IActionResult> GetAll([FromRoute] Guid categoryId, [FromQuery] GetProductTypesFilter filter) =>
         await mediator.Send(new GetProductTypesRequest(filter.Page, filter.NameQuery, categoryId))
-            .Map<IEnumerable<ProductTypeModel>, IActionResult>(response => 
+            .Map<IEnumerable<ProductTypeModel>, IActionResult>(response =>
                 response.Any() ? Ok(response) : NoContent());
 
     [HttpGet("get/{id:guid}")]

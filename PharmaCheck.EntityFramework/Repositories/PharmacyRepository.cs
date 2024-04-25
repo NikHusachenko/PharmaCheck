@@ -72,10 +72,20 @@ public sealed class PharmacyRepository : IRepository<PharmacyEntity>
         string region, 
         string street,
         string additionAddress) =>
-        (await _table.FirstOrDefaultAsync(entity => 
-            entity.Region == region &&
-            entity.City == city &&
-            entity.Street == street &&
-            entity.AdditionAddress == additionAddress &&
-            !entity.DeletedAt.HasValue)) is null ? false : true;
+        (await GetByAddress(city, region, street, additionAddress)) is null ? false : true;
+
+    public async Task<List<PharmacyEntity>> GetAll(string cityQuery,
+        string regionQuery,
+        string streetQuery,
+        string additionAddressQuery) =>
+        await _table.Where(entity =>
+            entity.City.Contains(cityQuery) &&
+            entity.Region.Contains(regionQuery) &&
+            entity.Street.Contains(streetQuery) &&
+            entity.AdditionAddress.Contains(additionAddressQuery))
+        .Include(entity => entity.Products)
+            .ThenInclude(product => product.Category)
+        .Include(entity => entity.Products)
+            .ThenInclude(product => product.ProductType)
+        .ToListAsync();
 }

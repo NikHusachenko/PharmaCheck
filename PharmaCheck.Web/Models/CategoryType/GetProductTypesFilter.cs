@@ -1,4 +1,4 @@
-﻿namespace PharmaCheck.Web.Models.ProductType;
+﻿namespace PharmaCheck.Web.Models.CategoryType;
 
 public sealed record GetProductTypesFilter
 {
