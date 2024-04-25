@@ -88,4 +88,13 @@ public sealed class PharmacyRepository : IRepository<PharmacyEntity>
         .Include(entity => entity.Products)
             .ThenInclude(product => product.ProductType)
         .ToListAsync();
+
+    public async Task<List<PharmacyEntity>> GetByProductId(Guid id) =>
+        await _table.Where(entity =>
+            entity.Products.FirstOrDefault(product => 
+                product.Id == id &&
+                product.Count > 0) != null &&
+            !entity.DeletedAt.HasValue)
+        .Include(entity => entity.Products)
+        .ToListAsync();
 }

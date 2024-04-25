@@ -2,9 +2,13 @@
 using Microsoft.AspNetCore.Mvc;
 using PharmaCheck.Domain.Models;
 using PharmaCheck.Domain.Pharmacy.GetPharmacies;
+using PharmaCheck.Domain.Pharmacy.GetPharmaciesByProductId;
+using PharmaCheck.Domain.Pharmacy.GetPharmacyById;
+using PharmaCheck.Domain.Pharmacy.GetPharmacyByName;
 using PharmaCheck.Domain.Pharmacy.NewPharmacy;
 using PharmaCheck.Services.Response;
 using PharmaCheck.Utilities.Extensions;
+using PharmaCheck.Web.Infrastructure;
 
 namespace PharmaCheck.Web.Controllers;
 
@@ -26,8 +30,21 @@ public class PharmacyController(IMediator mediator) : ControllerBase
                 result.Any() ? Ok(result) : NoContent());
 
     [HttpGet("get/{id:guid}")]
-    public async Task<IActionResult> GetById() => Ok();
+    public async Task<IActionResult> GetById([FromRoute] Guid id) =>
+        await mediator.Send(new GetPharmacyByIdRequest(id))
+            .Map<Result<PharmacyModel>, IActionResult>(result => result.IsError ?
+                NotFound(ControllerResponse.ToErrorResult(result.ErrorMessage)) :
+                Ok(result.Value));
 
     [HttpGet("get/{name}")]
-    public async Task<IActionResult> GetByName() => Ok();
+    public async Task<IActionResult> GetByName([FromRoute] string name) =>
+        await mediator.Send(new GetPharmacyByNameRequest(name))
+            .Map<Result<PharmacyModel>, IActionResult>(result => result.IsError ?
+                NotFound(ControllerResponse.ToErrorResult(result.ErrorMessage)) :
+                Ok(result.Value));
+
+    [HttpGet("get/product/{id:guid}")]
+    public async Task<IActionResult> GetByProductId([FromRoute] Guid id) =>
+        await mediator.Send(new GetPharmaciesByProductIdRequest(id))
+            .Map<List<PharmacyModel>, IActionResult>(result => result.Any() ? Ok(result) : NoContent());
 }

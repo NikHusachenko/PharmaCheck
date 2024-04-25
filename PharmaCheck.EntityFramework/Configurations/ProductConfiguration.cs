@@ -16,7 +16,7 @@ public sealed class ProductConfiguration : IEntityTypeConfiguration<ProductEntit
 
         builder.HasOne<SupplyEntity>(product => product.Supply)
             .WithMany(supply => supply.Products)
-            .HasForeignKey(product => product.SupplyId);
+            .HasForeignKey(product => product.SupplyFk);
 
         builder.HasOne<CategoryEntity>(product => product.Category)
             .WithMany(category => category.Products)

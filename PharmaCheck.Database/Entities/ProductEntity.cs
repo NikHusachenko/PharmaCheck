@@ -11,7 +11,7 @@ public sealed record ProductEntity : BaseEntity
     public Guid PharmacyId { get; set; }
     public PharmacyEntity Pharmacy { get; set; }
 
-    public Guid SupplyId { get; set; }
+    public Guid? SupplyFk { get; set; }
     public SupplyEntity Supply { get; set; }
 
     public Guid CategoryId { get; set; }
