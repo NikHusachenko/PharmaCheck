@@ -21,21 +21,20 @@ public sealed class GetSupplyByIdRequestHandler(IRepositoryFactory factory)
                     Id = request.Id,
                     Products = entity.Products.Select(product => new ProductModel()
                     {
-                        Count = product.Count,
-                        Description = product.Description,
-                        Id = product.Id,
-                        Manufacturer = product.Manufacturer,
-                        Name = product.Name,
-                        Price = product.Price,
+                        Count = product.Product.Count,
+                        Description = product.Product.Description,
+                        Id = product.Product.Id,
+                        Manufacturer = product.Product.Manufacturer,
+                        Name = product.Product.Name,
                         Category = new CategoryModel()
                         {
-                            Name = product.Category.Name,
-                            Id = product.Category.Id,
+                            Name = product.Product.Category.Name,
+                            Id = product.Product.Category.Id,
                         },
                         ProductType = new ProductTypeModel()
                         {
-                            Id = product.ProductType.Id,
-                            Name = product.ProductType.Name
+                            Id = product.Product.ProductType.Id,
+                            Name = product.Product.ProductType.Name
                         }
                     })
                     .ToList()

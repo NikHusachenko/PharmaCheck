@@ -26,8 +26,7 @@ public sealed class GetPharmaciesByProductIdRequestHandler(IRepositoryFactory fa
                     Count = product.Count,
                     Id = product.Id,
                     Manufacturer = product.Manufacturer,
-                    Name = product.Name,
-                    Price = product.Price,
+                    Name = product.Name
                 })
                 .ToList(),
                 Region = item.Region,

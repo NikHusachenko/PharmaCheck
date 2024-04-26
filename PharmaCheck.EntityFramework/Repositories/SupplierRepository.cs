@@ -63,6 +63,7 @@ public sealed class SupplierRepository : IRepository<SupplierEntity>
         await _table
             .Include(entity => entity.Supplies)
                 .ThenInclude(supply => supply.Products)
+                .ThenInclude(ps => ps.Product)
                     .ThenInclude(product => product.Category)
                         .ThenInclude(category => category.Types)
             .FirstOrDefaultAsync(entity => entity.Name == name &&

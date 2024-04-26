@@ -30,17 +30,16 @@ public sealed class GetSupplierByNameRequestHandler(IRepositoryFactory factory)
                         Id = supply.Id,
                         Products = supply.Products.Select(product => new ProductModel()
                         {
-                            Count = product.Count,
-                            Description = product.Description,
-                            Id = product.Id,
-                            Manufacturer = product.Manufacturer,
-                            Name = product.Name,
-                            Price = product.Price,
+                            Count = product.Product.Count,
+                            Description = product.Product.Description,
+                            Id = product.Product.Id,
+                            Manufacturer = product.Product.Manufacturer,
+                            Name = product.Product.Name,
                             Category = new CategoryModel()
                             {
-                                Id = product.Category.Id,
-                                Name = product.Category.Name,
-                                ProductTypes = product.Category.Types.Select(type => new ProductTypeModel()
+                                Id = product.Product.Category.Id,
+                                Name = product.Product.Category.Name,
+                                ProductTypes = product.Product.Category.Types.Select(type => new ProductTypeModel()
                                 {
                                     Id = type.Id,
                                     Name = type.Name,

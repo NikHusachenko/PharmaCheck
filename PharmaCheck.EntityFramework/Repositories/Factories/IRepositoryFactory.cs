@@ -7,4 +7,5 @@ public interface IRepositoryFactory
     SupplyRepository NewSupplyRepository();
     SupplierRepository NewSupplierRepository();
     PharmacyRepository NewPharmacyRepository();
+    ProductRepository NewProductRepository();
 }

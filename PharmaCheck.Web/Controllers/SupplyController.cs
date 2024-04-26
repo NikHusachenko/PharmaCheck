@@ -13,7 +13,6 @@ namespace PharmaCheck.Web.Controllers;
 [ApiController]
 public class SupplyController(IMediator mediator) : ControllerBase
 {
-    // TODO
     [HttpPost("new")]
     public async Task<IActionResult> NewSupply([FromRoute] Guid supplierId) => 
         await mediator.Send(new NewSupplyRequest(supplierId))
@@ -21,9 +20,11 @@ public class SupplyController(IMediator mediator) : ControllerBase
                 StatusCode((int)result.StatusCode, ControllerResponse.ToErrorResult(result.ErrorMessage)) :
                 Ok(result.Value));
 
-    // TODO
     [HttpGet("get/all")]
     public async Task<IActionResult> GetAll([FromRoute] Guid supplierId) =>
         await mediator.Send(new GetSuppliesRequest(supplierId))
             .Map<List<SupplyModel>, IActionResult>(list => list.Any() ? Ok(list) : NoContent());
+
+    [HttpGet("get/{id:guid}")]
+    public async Task<IActionResult> GetById([FromRoute] Guid id) => Ok();
 }

@@ -2,7 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using PharmaCheck.Domain.Models;
 using PharmaCheck.Domain.Supplier.CreateSupplier;
+using PharmaCheck.Domain.Supplier.GetSupplierById;
 using PharmaCheck.Domain.Supplier.GetSuppliers;
+using PharmaCheck.Services.Response;
 using PharmaCheck.Utilities.Extensions;
 using PharmaCheck.Web.Infrastructure;
 
@@ -24,7 +26,10 @@ public class SupplierController(IMediator mediator) : ControllerBase
         await mediator.Send(request)
             .Map<List<SupplierModel>, IActionResult>(list => list.Any() ? Ok(list) : NoContent());
 
-    // TODO
     [HttpGet("get/{id:guid}")]
-    public async Task<IActionResult> GetById([FromQuery] Guid id) => Ok();
+    public async Task<IActionResult> GetById([FromQuery] Guid id) =>
+        await mediator.Send(new GetSupplierByIdRequest(id))
+            .Map<Result<SupplierModel>, IActionResult>(result => result.IsError ?
+                NotFound(ControllerResponse.ToErrorResult(result.ErrorMessage)) :
+                Ok(result.Value));
 }

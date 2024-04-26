@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using PharmaCheck.Database.Entities;
 using PharmaCheck.Domain.Models;
 using PharmaCheck.EntityFramework.Repositories;
 using PharmaCheck.EntityFramework.Repositories.Factories;
@@ -13,7 +14,7 @@ public sealed class GetSuppliesRequestHandler(IRepositoryFactory factory)
     {
         SupplyRepository repository = factory.NewSupplyRepository();
         return await repository.GetAll(request.SupplierId)
-            .Map(list => list.Any() ?
+            .Map<List<SupplyEntity>, List<SupplyModel>>(list => list.Any() ?
                 list.Select(supply => new SupplyModel()
                 {
                     Id = supply.Id,
@@ -21,29 +22,28 @@ public sealed class GetSuppliesRequestHandler(IRepositoryFactory factory)
                     {
                         Category = new CategoryModel()
                         {
-                            Id = product.Category.Id,
-                            Name = product.Category.Name
+                            Id = product.Product.Category.Id,
+                            Name = product.Product.Category.Name
                         },
-                        Count = product.Count,
-                        Description = product.Description,
-                        Id = product.Id,
-                        Manufacturer = product.Manufacturer,
-                        Name = product.Name,
-                        Price = product.Price,
+                        Count = product.Product.Count,
+                        Description = product.Product.Description,
+                        Id = product.Product.Id,
+                        Manufacturer = product.Product.Manufacturer,
+                        Name = product.Product.Name,
                         ProductType = new ProductTypeModel()
                         {
-                            Id = product.ProductType.Id,
-                            Name = product.ProductType.Name,
+                            Id = product.Product.ProductType.Id,
+                            Name = product.Product.ProductType.Name,
                         },
                         Pharmacy = new PharmacyModel()
                         {
-                            AdditionAddress = product.Pharmacy.AdditionAddress,
-                            City = product.Pharmacy.City,
-                            ContactPhone = product.Pharmacy.ContactPhone,
-                            Name = product.Pharmacy.Name,
-                            Region = product.Pharmacy.Region,
-                            Street = product.Pharmacy.Street,
-                            Type = product.Pharmacy.Type,
+                            AdditionAddress = product.Product.Pharmacy.AdditionAddress,
+                            City = product.Product.Pharmacy.City,
+                            ContactPhone = product.Product.Pharmacy.ContactPhone,
+                            Name = product.Product.Pharmacy.Name,
+                            Region = product.Product.Pharmacy.Region,
+                            Street = product.Product.Pharmacy.Street,
+                            Type = product.Product.Pharmacy.Type,
                         }
                     })
                     .ToList()

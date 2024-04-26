@@ -30,7 +30,6 @@ public sealed class GetPharmacyByIdRequestHandler(IRepositoryFactory factory) : 
                         Id = product.Id,
                         Manufacturer = product.Manufacturer,
                         Name = product.Name,
-                        Price = product.Price,
                         Category = new CategoryModel()
                         {
                             Id = product.Category.Id,
