@@ -13,6 +13,10 @@ namespace PharmaCheck.EntityFramework
         public DbSet<SupplierEntity> Suppliers { get; set; }
         public DbSet<SupplyEntity> Supplies { get; set; }
         public DbSet<ProductSuppliesEntity> ProductSupplies { get; set; }
+        public DbSet<UserEntity> Users { get; set; }
+        public DbSet<ClientEntity> Clients { get; set; }
+        public DbSet<CheckEntity> Checks { get; set; }
+        public DbSet<ProductCheckEntity> ProductChecks { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
@@ -28,6 +32,10 @@ namespace PharmaCheck.EntityFramework
             modelBuilder.ApplyConfiguration(new SupplierConfiguration());
             modelBuilder.ApplyConfiguration(new SupplyConfiguration());
             modelBuilder.ApplyConfiguration(new ProductSuppliesConfiguration());
+            modelBuilder.ApplyConfiguration(new UserConfiguration());
+            modelBuilder.ApplyConfiguration(new ClientConfiguration());
+            modelBuilder.ApplyConfiguration(new CheckConfiguration());
+            modelBuilder.ApplyConfiguration(new ProductCheckConfiguration());
         }
     }
 }

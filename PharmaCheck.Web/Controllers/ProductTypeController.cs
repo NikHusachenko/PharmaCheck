@@ -16,7 +16,7 @@ namespace PharmaCheck.Web.Controllers;
 [ApiController]
 public sealed class ProductTypeController(IMediator mediator) : ControllerBase
 {
-    [HttpPost]
+    [HttpPost("create")]
     public async Task<IActionResult> Create([FromRoute] Guid categoryId, [FromBody] CreateProductTypeModel model) =>
         await mediator.Send(new CreateProductTypeRequest(categoryId, model.Name))
             .Map<Result<Guid>, IActionResult>(result => result.IsError ?

@@ -9,6 +9,7 @@ using PharmaCheck.Domain.Models;
 using PharmaCheck.Services.Response;
 using PharmaCheck.Utilities.Extensions;
 using PharmaCheck.Web.Infrastructure;
+using PharmaCheck.Web.Models.CategoryType;
 
 namespace PharmaCheck.Web.Controllers;
 
@@ -16,7 +17,7 @@ namespace PharmaCheck.Web.Controllers;
 [ApiController]
 public sealed class CategoryController(IMediator mediator) : ControllerBase
 {
-    [HttpPost]
+    [HttpPost("create")]
     public async Task<IActionResult> Create([FromBody] CreateCategoryRequest request) =>
         await mediator.Send(request)
             .Map<Result<Guid>, IActionResult>(result => result.IsError ?
@@ -41,9 +42,9 @@ public sealed class CategoryController(IMediator mediator) : ControllerBase
             .Map<Result<CategoryModel>, IActionResult>(result => 
                 result.IsError ? NoContent() : Ok(result.Value));
 
-    [HttpPut("{id:guid}")]
-    public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] string name) =>
-        await mediator.Send(new UpdateCategoryRequest(id, name))
+    [HttpPut("{id:guid}/name")]
+    public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] UpdateCategoryNameModel model) =>
+        await mediator.Send(new UpdateCategoryRequest(id, model.NewName))
             .Map<Result, IActionResult>(response => response.IsError ?
                 StatusCode((int)response.StatusCode, ControllerResponse.ToErrorResult(response.ErrorMessage)) :
                 NoContent());

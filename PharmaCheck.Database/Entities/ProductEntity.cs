@@ -16,5 +16,6 @@ public sealed record ProductEntity : BaseEntity
     public Guid TypeId { get; set; }
     public ProductTypeEntity ProductType { get; set; }
 
+    public List<ProductCheckEntity> Checks { get; set; } = new List<ProductCheckEntity>();
     public List<ProductSuppliesEntity> Supplies { get; set; } = new List<ProductSuppliesEntity>();
 }

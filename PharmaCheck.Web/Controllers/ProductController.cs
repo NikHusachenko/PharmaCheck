@@ -6,7 +6,7 @@ namespace PharmaCheck.Web.Controllers;
 [ApiController]
 public class ProductController : ControllerBase
 {
-    [HttpPost("new")]
+    /*[HttpPost("new")]
     public async Task<IActionResult> Create() => Ok();
 
     [HttpGet("get/all")]
@@ -19,7 +19,7 @@ public class ProductController : ControllerBase
     public async Task<IActionResult> SearchByName([FromRoute] string name) => Ok();
 
     [HttpPost]
-    public async Task<IActionResult> AttachToSupply() => Ok();
+    public async Task<IActionResult> AttachToSupply() => Ok();*/
 
     // new
     // get/all

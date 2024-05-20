@@ -13,7 +13,7 @@ namespace PharmaCheck.Web.Controllers;
 [ApiController]
 public class SupplyController(IMediator mediator) : ControllerBase
 {
-    [HttpPost("new")]
+    [HttpPost("create")]
     public async Task<IActionResult> NewSupply([FromRoute] Guid supplierId) => 
         await mediator.Send(new NewSupplyRequest(supplierId))
             .Map<Result<Guid>, IActionResult>(result => result.IsError ?
