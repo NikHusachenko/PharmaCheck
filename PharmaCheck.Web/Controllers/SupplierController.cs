@@ -5,7 +5,7 @@ using PharmaCheck.Domain.Supplier.CreateSupplier;
 using PharmaCheck.Domain.Supplier.GetSupplierById;
 using PharmaCheck.Domain.Supplier.GetSuppliers;
 using PharmaCheck.Services.Response;
-using PharmaCheck.Utilities.Extensions;
+using PharmaCheck.Services.Extensions;
 using PharmaCheck.Web.Infrastructure;
 
 namespace PharmaCheck.Web.Controllers;

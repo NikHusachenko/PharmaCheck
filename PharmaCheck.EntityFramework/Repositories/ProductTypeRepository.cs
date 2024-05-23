@@ -3,7 +3,7 @@ using PharmaCheck.Database.Entities;
 
 namespace PharmaCheck.EntityFramework.Repositories;
 
-public sealed class ProductTypeRepository : IRepository<ProductTypeEntity>
+public sealed class ProductTypeRepository
 {
     private readonly ApplicationDbContext _dbContext;
     private readonly DbSet<ProductTypeEntity> _table;

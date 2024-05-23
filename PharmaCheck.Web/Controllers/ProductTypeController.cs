@@ -6,7 +6,7 @@ using PharmaCheck.Domain.ProductType.GetProductTypeById;
 using PharmaCheck.Domain.ProductType.GetProductTypeByName;
 using PharmaCheck.Domain.ProductType.GetProductTypes;
 using PharmaCheck.Services.Response;
-using PharmaCheck.Utilities.Extensions;
+using PharmaCheck.Services.Extensions;
 using PharmaCheck.Web.Infrastructure;
 using PharmaCheck.Web.Models.CategoryType;
 

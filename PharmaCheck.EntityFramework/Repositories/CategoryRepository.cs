@@ -3,7 +3,7 @@ using PharmaCheck.Database.Entities;
 
 namespace PharmaCheck.EntityFramework.Repositories;
 
-public sealed class CategoryRepository : IRepository<CategoryEntity>
+public sealed class CategoryRepository
 {
     private readonly ApplicationDbContext _dbContext;
     private readonly DbSet<CategoryEntity> _table;
@@ -49,9 +49,7 @@ public sealed class CategoryRepository : IRepository<CategoryEntity>
     public async Task<List<CategoryEntity>> GetAll(int skip, int take, string query) =>
         await _table.Where(category => category.Name.Contains(query) &&
             !category.DeletedAt.HasValue)
-            .Skip(skip)
-            .Take(take)
-            .ToListAsync();
+            .Skip(skip).Take(take).ToListAsync();
 
     public async Task<CategoryEntity?> GetByName(string name) =>
         await _table

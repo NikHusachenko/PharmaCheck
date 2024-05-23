@@ -4,7 +4,7 @@ using PharmaCheck.Domain.Models;
 using PharmaCheck.Domain.Supply.GetSupplies;
 using PharmaCheck.Domain.Supply.NewSupply;
 using PharmaCheck.Services.Response;
-using PharmaCheck.Utilities.Extensions;
+using PharmaCheck.Services.Extensions;
 using PharmaCheck.Web.Infrastructure;
 
 namespace PharmaCheck.Web.Controllers;

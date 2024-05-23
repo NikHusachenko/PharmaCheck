@@ -3,7 +3,7 @@ using PharmaCheck.Database.Entities;
 using PharmaCheck.Domain.Models;
 using PharmaCheck.EntityFramework.Repositories;
 using PharmaCheck.EntityFramework.Repositories.Factories;
-using PharmaCheck.Utilities.Extensions;
+using PharmaCheck.Services.Extensions;
 
 namespace PharmaCheck.Domain.Supply.GetSupplies;
 

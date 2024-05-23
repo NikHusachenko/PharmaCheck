@@ -8,4 +8,5 @@ public interface IRepositoryFactory
     SupplierRepository NewSupplierRepository();
     PharmacyRepository NewPharmacyRepository();
     ProductRepository NewProductRepository();
+    UserRepository NewUserRepository();
 }

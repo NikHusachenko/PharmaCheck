@@ -7,7 +7,7 @@ using PharmaCheck.Domain.Category.GetCategoryByName;
 using PharmaCheck.Domain.Category.UpdateCategory;
 using PharmaCheck.Domain.Models;
 using PharmaCheck.Services.Response;
-using PharmaCheck.Utilities.Extensions;
+using PharmaCheck.Services.Extensions;
 using PharmaCheck.Web.Infrastructure;
 using PharmaCheck.Web.Models.CategoryType;
 

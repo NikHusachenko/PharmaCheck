@@ -3,7 +3,7 @@ using PharmaCheck.Domain.Models;
 using PharmaCheck.EntityFramework.Repositories;
 using PharmaCheck.EntityFramework.Repositories.Factories;
 using PharmaCheck.Services.Response;
-using PharmaCheck.Utilities.Extensions;
+using PharmaCheck.Services.Extensions;
 
 namespace PharmaCheck.Domain.Pharmacy.GetPharmacyById;
 

@@ -7,7 +7,7 @@ using PharmaCheck.Domain.Pharmacy.GetPharmacyById;
 using PharmaCheck.Domain.Pharmacy.GetPharmacyByName;
 using PharmaCheck.Domain.Pharmacy.NewPharmacy;
 using PharmaCheck.Services.Response;
-using PharmaCheck.Utilities.Extensions;
+using PharmaCheck.Services.Extensions;
 using PharmaCheck.Web.Infrastructure;
 
 namespace PharmaCheck.Web.Controllers;

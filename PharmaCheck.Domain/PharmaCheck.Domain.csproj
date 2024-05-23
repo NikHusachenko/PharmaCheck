@@ -12,7 +12,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\PharmaCheck.Services\PharmaCheck.Services.csproj" />
-    <ProjectReference Include="..\PharmaCheck.Utilities\PharmaCheck.Utilities.csproj" />
   </ItemGroup>
 
 </Project>

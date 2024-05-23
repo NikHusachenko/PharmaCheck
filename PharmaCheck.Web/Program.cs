@@ -3,7 +3,9 @@ using Npgsql;
 using PharmaCheck.Domain.Category.GetCategories;
 using PharmaCheck.EntityFramework;
 using PharmaCheck.EntityFramework.Repositories.Factories;
-using System.Reflection;
+using PharmaCheck.Services.HashingServices;
+using PharmaCheck.Services.JwtServices;
+using PharmaCheck.Services.UserServices;
 
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
@@ -36,6 +38,11 @@ services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(connectionString!);
 });
 services.AddScoped<IRepositoryFactory, RepositoryFactory>();
+
+services.Configure<JwtOptions>(builder.Configuration.GetSection("JwtOptions"));
+
+services.AddTransient<IJwtService, JwtService>();
+services.AddTransient<IUserService, UserService>();
 
 var app = builder.Build();
 
