@@ -12,8 +12,8 @@ using PharmaCheck.EntityFramework;
 namespace PharmaCheck.EntityFramework.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240520212301_AddCheckEntityAndRelations")]
-    partial class AddCheckEntityAndRelations
+    [Migration("20240524175424_InitCreate")]
+    partial class InitCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -359,10 +359,6 @@ namespace PharmaCheck.EntityFramework.Migrations
                     b.Property<DateTimeOffset?>("DeletedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasColumnType("text");
@@ -378,6 +374,14 @@ namespace PharmaCheck.EntityFramework.Migrations
                     b.Property<string>("Login")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<string>("Phone")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<byte[]>("SaltByte")
+                        .IsRequired()
+                        .HasColumnType("bytea");
 
                     b.Property<DateTimeOffset>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");

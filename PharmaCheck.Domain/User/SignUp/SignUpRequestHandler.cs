@@ -6,6 +6,7 @@ using PharmaCheck.Services.HashingServices;
 using PharmaCheck.Services.JwtServices;
 using PharmaCheck.Services.Response;
 using PharmaCheck.Services.UserServices;
+using System.Text;
 
 namespace PharmaCheck.Domain.User.SignUp;
 

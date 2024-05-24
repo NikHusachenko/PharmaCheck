@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using PharmaCheck.Database.Entities;
+using PharmaCheck.Domain.User.SignIn;
 using PharmaCheck.Domain.User.SignUp;
 using PharmaCheck.Services.Extensions;
 using PharmaCheck.Services.Response;
@@ -14,6 +15,13 @@ public class AuthenticationController(IMediator mediator) : ControllerBase
 {
     [HttpPost("sign-up")]
     public async Task<IActionResult> SignUp([FromBody] SignUpRequest request, CancellationToken cancellationToken = default) =>
+        await mediator.Send(request, cancellationToken)
+            .Map<Result<string>, IActionResult>(result => result.IsError ?
+                StatusCode((int)result.StatusCode, ControllerResponse.ToErrorResult(result.ErrorMessage)) :
+                Ok(result.Value));
+
+    [HttpPost("sign-in")]
+    public async Task<IActionResult> SignIn([FromBody] SignInRequest request, CancellationToken cancellationToken = default) =>
         await mediator.Send(request, cancellationToken)
             .Map<Result<string>, IActionResult>(result => result.IsError ?
                 StatusCode((int)result.StatusCode, ControllerResponse.ToErrorResult(result.ErrorMessage)) :
