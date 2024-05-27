@@ -13,7 +13,7 @@ public sealed class GetProductTypeByNameRequestHandler(IRepositoryFactory factor
     public async Task<Result<ProductTypeModel>> Handle(GetProductTypeByNameRequest request, CancellationToken cancellationToken)
     {
         ProductTypeRepository repository = factory.NewProductTypeRepository();
-        return await repository.GetByName(request.CategoryId, request.Name)
+        return await repository.GetByName(request.Name)
             .Map(entity => entity is null ?
                 Result<ProductTypeModel>.Error("Product type not found.", ResultErrorStatusCode.NotFound) :
                 Result<ProductTypeModel>.Ok(new ProductTypeModel()

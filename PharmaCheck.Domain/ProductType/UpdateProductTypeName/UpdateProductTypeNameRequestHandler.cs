@@ -15,7 +15,7 @@ public sealed class UpdateProductTypeNameRequestHandler(
     public async Task<Result> Handle(UpdateProductTypeNameRequest request, CancellationToken cancellationToken)
     {
         ProductTypeRepository repository = repositoryFactory.NewProductTypeRepository();
-        ProductTypeEntity? entity = await repository.GetById(request.CategoryId, request.Id);
+        ProductTypeEntity? entity = await repository.GetById(request.Id);
 
         if (entity is null)
         {

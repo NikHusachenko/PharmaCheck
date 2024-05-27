@@ -15,7 +15,7 @@ public sealed class GetProductTypesRequestHandler(IRepositoryFactory repositoryF
     {
         ProductTypeRepository repository = repositoryFactory.NewProductTypeRepository();
 
-        int skip = request.Page <= 0 ? 0 : PAGE_VOLUME * (request.Page - 1);
+        int skip = request.Page.HasValue ? (request.Page.Value <= 0 ? 0 : PAGE_VOLUME * (request.Page.Value - 1)) : 0;
         return await repository.GetAll(skip, PAGE_VOLUME, request.QueryName, request.CategoryId).Map(type => new ProductTypeModel()
         {
             Category = new CategoryModel()

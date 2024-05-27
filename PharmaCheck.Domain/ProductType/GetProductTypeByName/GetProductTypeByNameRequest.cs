@@ -4,4 +4,4 @@ using PharmaCheck.Services.Response;
 
 namespace PharmaCheck.Domain.ProductType.GetProductTypeByName;
 
-public sealed record GetProductTypeByNameRequest(Guid CategoryId, string Name) : IRequest<Result<ProductTypeModel>>;
+public sealed record GetProductTypeByNameRequest(string Name) : IRequest<Result<ProductTypeModel>>;

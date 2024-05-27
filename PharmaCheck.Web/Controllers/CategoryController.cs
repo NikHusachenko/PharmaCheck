@@ -31,8 +31,8 @@ public sealed class CategoryController(IMediator mediator) : ControllerBase
                 response.Any() ? Ok(response) : NoContent());
 
     [HttpGet("get/{name}")]
-    public async Task<IActionResult> GetByName([FromRoute] string name) =>
-        await mediator.Send(new GetCategoryByNameRequest(name))
+    public async Task<IActionResult> GetByName([FromRoute] GetCategoryByNameRequest request) =>
+        await mediator.Send(request)
             .Map<Result<CategoryModel>, IActionResult>(result => 
                 result.IsError ? NoContent() : Ok(result.Value));
 
@@ -42,9 +42,9 @@ public sealed class CategoryController(IMediator mediator) : ControllerBase
             .Map<Result<CategoryModel>, IActionResult>(result => 
                 result.IsError ? NoContent() : Ok(result.Value));
 
-    [HttpPut("{id:guid}/name")]
-    public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] UpdateCategoryNameModel model) =>
-        await mediator.Send(new UpdateCategoryRequest(id, model.NewName))
+    [HttpPut("name")]
+    public async Task<IActionResult> Update([FromBody] UpdateCategoryRequest request) =>
+        await mediator.Send(request)
             .Map<Result, IActionResult>(response => response.IsError ?
                 StatusCode((int)response.StatusCode, ControllerResponse.ToErrorResult(response.ErrorMessage)) :
                 NoContent());

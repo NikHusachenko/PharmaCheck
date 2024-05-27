@@ -40,25 +40,26 @@ public sealed class ProductTypeRepository
         await _dbContext.SaveChangesAsync();
     }
 
-    public async Task<ProductTypeEntity?> GetById(Guid categoryId, Guid id) =>
-        await _table
-            .FirstOrDefaultAsync(entity => entity.Id == id &&
-            entity.CategoryId == categoryId &&
+    public async Task<ProductTypeEntity?> GetById(Guid id) =>
+        await _table.FirstOrDefaultAsync(entity => entity.Id == id &&
             !entity.DeletedAt.HasValue);
 
-    public async Task<ProductTypeEntity?> GetByName(Guid categoryId, string name) =>
-        await _table
-            .FirstOrDefaultAsync(entity => entity.Name == name &&
-            entity.CategoryId == categoryId &&
+    public async Task<ProductTypeEntity?> GetByName(string name) =>
+        await _table.FirstOrDefaultAsync(entity => entity.Name == name &&
             !entity.DeletedAt.HasValue);
 
-    public async Task<List<ProductTypeEntity>> GetAll(int skip, int take, string queryName, Guid categoryId) =>
-        await _table.Where(type => 
-            type.CategoryId == categoryId &&
-            type.Name.Contains(queryName) &&
-            !type.DeletedAt.HasValue)
-                .Skip(skip)
-                .Take(take)
-                .Include(type => type.Category)
-                .ToListAsync();
+    public async Task<List<ProductTypeEntity>> GetAll(int skip, int take, string? queryName, Guid? categoryId)
+    {
+        IQueryable<ProductTypeEntity> query = _table.AsNoTracking();
+
+        query = queryName is not null ?
+            query.Where(entity => entity.Name.Contains(queryName)) :
+            query;
+
+        query = categoryId.HasValue ?
+            query.Where(entity => entity.CategoryId == categoryId.Value) :
+            query;
+
+        return await query.Skip(skip).Take(take).ToListAsync();
+    }
 }
