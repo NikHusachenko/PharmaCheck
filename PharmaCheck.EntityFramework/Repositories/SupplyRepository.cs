@@ -36,9 +36,6 @@ public sealed class SupplyRepository
         await _table
             .Include(entity => entity.Products)
             .ThenInclude(supply => supply.Product)
-                .ThenInclude(product => product.Category)
-            .Include(entity => entity.Products)
-            .ThenInclude(supply => supply.Product)
                 .ThenInclude(product => product.ProductType)
             .FirstOrDefaultAsync(entity => entity.Id == id &&
                 entity.SupplierId == supplierId &&
@@ -48,13 +45,11 @@ public sealed class SupplyRepository
         await _table
             .Include(entity => entity.Products)
             .ThenInclude(supply => supply.Product)
-                .ThenInclude(product => product.Category)
-            .Include(entity => entity.Products)
-            .ThenInclude(supply => supply.Product)
                 .ThenInclude(product => product.ProductType)
             .Include(entity => entity.Products)
             .ThenInclude(supply => supply.Product)
-                .ThenInclude(product => product.Pharmacy)
+                .ThenInclude(product => product.Pharmacies)
+                    .ThenInclude(pp => pp.Pharmacy)
             .Where(entity => entity.SupplierId == supplierId &&
                 !entity.DeletedAt.HasValue)
             .ToListAsync();

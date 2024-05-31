@@ -64,8 +64,7 @@ public sealed class SupplierRepository
             .Include(entity => entity.Supplies)
                 .ThenInclude(supply => supply.Products)
                 .ThenInclude(ps => ps.Product)
-                    .ThenInclude(product => product.Category)
-                        .ThenInclude(category => category.Types)
+                    .ThenInclude(product => product.ProductType)
             .FirstOrDefaultAsync(entity => entity.Name == name &&
                 !entity.DeletedAt.HasValue);
 

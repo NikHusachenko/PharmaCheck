@@ -35,18 +35,16 @@ public sealed class PharmacyRepository
     public async Task<PharmacyEntity?> GetById(Guid id) =>
         await _table
             .Include(entity => entity.Products)
-                .ThenInclude(product => product.Category)
-            .Include(entity => entity.Products)
-                .ThenInclude(product => product.ProductType)
+                .ThenInclude(product => product.Product)
+                    .ThenInclude(product => product.ProductType)
             .FirstOrDefaultAsync(entity => entity.Id == id &&
                 !entity.DeletedAt.HasValue);
 
     public async Task<PharmacyEntity?> GetByName(string name) =>
         await _table
             .Include(entity => entity.Products)
-                .ThenInclude(product => product.Category)
-            .Include(entity => entity.Products)
-                .ThenInclude(product => product.ProductType)
+                .ThenInclude(product => product.Product)
+                    .ThenInclude(product => product.ProductType)
             .FirstOrDefaultAsync(entity => entity.Name == name &&
                 !entity.DeletedAt.HasValue);
 
@@ -57,9 +55,8 @@ public sealed class PharmacyRepository
         string additionAddress) =>
         await _table
             .Include(entity => entity.Products)
-                .ThenInclude(product => product.Category)
-            .Include(entity => entity.Products)
-                .ThenInclude(product => product.ProductType)
+                .ThenInclude(product => product.Product)
+                    .ThenInclude(product => product.ProductType)
             .FirstOrDefaultAsync(entity =>
                 entity.Region == region &&
                 entity.City == city &&
@@ -83,18 +80,16 @@ public sealed class PharmacyRepository
             entity.Region.Contains(regionQuery) &&
             entity.Street.Contains(streetQuery) &&
             entity.AdditionAddress.Contains(additionAddressQuery))
-        .Include(entity => entity.Products)
-            .ThenInclude(product => product.Category)
-        .Include(entity => entity.Products)
-            .ThenInclude(product => product.ProductType)
+            .Include(entity => entity.Products)
+                .ThenInclude(product => product.Product)
+                    .ThenInclude(product => product.ProductType)
         .ToListAsync();
 
     public async Task<List<PharmacyEntity>> GetByProductId(Guid id) =>
         await _table.Where(entity =>
-            entity.Products.FirstOrDefault(product => 
-                product.Id == id &&
-                product.Count > 0) != null &&
+            entity.Products.FirstOrDefault(pp => pp.ProductId == id) != null &&
             !entity.DeletedAt.HasValue)
         .Include(entity => entity.Products)
+            .ThenInclude(product => product.Product)
         .ToListAsync();
 }

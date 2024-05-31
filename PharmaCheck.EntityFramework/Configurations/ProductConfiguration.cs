@@ -10,14 +10,6 @@ public sealed class ProductConfiguration : IEntityTypeConfiguration<ProductEntit
     {
         builder.ToTable("Products").HasKey(product => product.Id);
 
-        builder.HasOne<PharmacyEntity>(product => product.Pharmacy)
-            .WithMany(pharmacy => pharmacy.Products)
-            .HasForeignKey(product => product.PharmacyId);
-
-        builder.HasOne<CategoryEntity>(product => product.Category)
-            .WithMany(category => category.Products)
-            .HasForeignKey(product => product.CategoryId);
-
         builder.HasOne<ProductTypeEntity>(product => product.ProductType)
             .WithMany(type => type.Products)
             .HasForeignKey(product => product.TypeId);

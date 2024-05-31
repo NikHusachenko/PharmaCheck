@@ -35,16 +35,15 @@ public sealed class GetSupplierByNameRequestHandler(IRepositoryFactory factory)
                             Id = product.Product.Id,
                             Manufacturer = product.Product.Manufacturer,
                             Name = product.Product.Name,
-                            Category = new CategoryModel()
+                            ProductType = new ProductTypeModel()
                             {
-                                Id = product.Product.Category.Id,
-                                Name = product.Product.Category.Name,
-                                ProductTypes = product.Product.Category.Types.Select(type => new ProductTypeModel()
+                                Id = product.Product.ProductType.Id,
+                                Name = product.Product.ProductType.Name,
+                                Category = new CategoryModel()
                                 {
-                                    Id = type.Id,
-                                    Name = type.Name,
-                                })
-                                .ToList()
+                                    Name = product.Product.ProductType.Category.Name,
+                                    Id = product.Product.ProductType.Category.Id,
+                                }
                             }
                         })
                         .ToList()

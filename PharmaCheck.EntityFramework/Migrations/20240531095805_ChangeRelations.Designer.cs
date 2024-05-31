@@ -12,8 +12,8 @@ using PharmaCheck.EntityFramework;
 namespace PharmaCheck.EntityFramework.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240524175424_InitCreate")]
-    partial class InitCreate
+    [Migration("20240531095805_ChangeRelations")]
+    partial class ChangeRelations
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -64,12 +64,23 @@ namespace PharmaCheck.EntityFramework.Migrations
                     b.Property<DateTimeOffset?>("DeletedAt")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<bool>("IsPaid")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTimeOffset?>("PaidAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("PharmacyId")
+                        .HasColumnType("uuid");
+
                     b.Property<DateTimeOffset>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ClientId");
+
+                    b.HasIndex("PharmacyId");
 
                     b.ToTable("Checks", (string)null);
                 });
@@ -157,6 +168,33 @@ namespace PharmaCheck.EntityFramework.Migrations
                     b.ToTable("Pharmacies", (string)null);
                 });
 
+            modelBuilder.Entity("PharmaCheck.Database.Entities.PharmacyProductsEntity", b =>
+                {
+                    b.Property<Guid>("PharmacyId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTimeOffset?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("PharmacyId", "ProductId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("Pharmacy Products", (string)null);
+                });
+
             modelBuilder.Entity("PharmaCheck.Database.Entities.ProductCheckEntity", b =>
                 {
                     b.Property<Guid>("ProductId")
@@ -190,9 +228,6 @@ namespace PharmaCheck.EntityFramework.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("CategoryId")
-                        .HasColumnType("uuid");
-
                     b.Property<int>("Count")
                         .HasColumnType("integer");
 
@@ -214,8 +249,8 @@ namespace PharmaCheck.EntityFramework.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<Guid>("PharmacyId")
-                        .HasColumnType("uuid");
+                    b.Property<float>("Price")
+                        .HasColumnType("real");
 
                     b.Property<Guid>("TypeId")
                         .HasColumnType("uuid");
@@ -224,10 +259,6 @@ namespace PharmaCheck.EntityFramework.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CategoryId");
-
-                    b.HasIndex("PharmacyId");
 
                     b.HasIndex("TypeId");
 
@@ -397,7 +428,34 @@ namespace PharmaCheck.EntityFramework.Migrations
                         .WithMany("Checks")
                         .HasForeignKey("ClientId");
 
+                    b.HasOne("PharmaCheck.Database.Entities.PharmacyEntity", "Pharmacy")
+                        .WithMany("Checks")
+                        .HasForeignKey("PharmacyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Client");
+
+                    b.Navigation("Pharmacy");
+                });
+
+            modelBuilder.Entity("PharmaCheck.Database.Entities.PharmacyProductsEntity", b =>
+                {
+                    b.HasOne("PharmaCheck.Database.Entities.PharmacyEntity", "Pharmacy")
+                        .WithMany("Products")
+                        .HasForeignKey("PharmacyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("PharmaCheck.Database.Entities.ProductEntity", "Product")
+                        .WithMany("Pharmacies")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Pharmacy");
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("PharmaCheck.Database.Entities.ProductCheckEntity", b =>
@@ -421,27 +479,11 @@ namespace PharmaCheck.EntityFramework.Migrations
 
             modelBuilder.Entity("PharmaCheck.Database.Entities.ProductEntity", b =>
                 {
-                    b.HasOne("PharmaCheck.Database.Entities.CategoryEntity", "Category")
-                        .WithMany("Products")
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("PharmaCheck.Database.Entities.PharmacyEntity", "Pharmacy")
-                        .WithMany("Products")
-                        .HasForeignKey("PharmacyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("PharmaCheck.Database.Entities.ProductTypeEntity", "ProductType")
                         .WithMany("Products")
                         .HasForeignKey("TypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Category");
-
-                    b.Navigation("Pharmacy");
 
                     b.Navigation("ProductType");
                 });
@@ -489,8 +531,6 @@ namespace PharmaCheck.EntityFramework.Migrations
 
             modelBuilder.Entity("PharmaCheck.Database.Entities.CategoryEntity", b =>
                 {
-                    b.Navigation("Products");
-
                     b.Navigation("Types");
                 });
 
@@ -506,12 +546,16 @@ namespace PharmaCheck.EntityFramework.Migrations
 
             modelBuilder.Entity("PharmaCheck.Database.Entities.PharmacyEntity", b =>
                 {
+                    b.Navigation("Checks");
+
                     b.Navigation("Products");
                 });
 
             modelBuilder.Entity("PharmaCheck.Database.Entities.ProductEntity", b =>
                 {
                     b.Navigation("Checks");
+
+                    b.Navigation("Pharmacies");
 
                     b.Navigation("Supplies");
                 });

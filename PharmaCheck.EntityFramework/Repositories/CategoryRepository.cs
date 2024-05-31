@@ -42,7 +42,8 @@ public sealed class CategoryRepository
 
     public async Task<CategoryEntity?> GetById(Guid id) => 
         await _table
-            .Include(entity => entity.Products)
+            .Include(entity => entity.Types)
+            .ThenInclude(type => type.Products)
             .FirstOrDefaultAsync(entity => entity.Id == id &&
                 !entity.DeletedAt.HasValue);
 
@@ -52,8 +53,7 @@ public sealed class CategoryRepository
             .Skip(skip).Take(take).ToListAsync();
 
     public async Task<CategoryEntity?> GetByName(string name) =>
-        await _table
-            .Include(entity => entity.Products)
+        await _table.Include(entity => entity.Types)
             .FirstOrDefaultAsync(category => category.Name == name &&
                 !category.DeletedAt.HasValue);
 }

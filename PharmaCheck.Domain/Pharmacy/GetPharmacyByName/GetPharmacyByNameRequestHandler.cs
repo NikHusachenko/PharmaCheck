@@ -26,20 +26,20 @@ public sealed class GetPharmacyByNameRequestHandler(IRepositoryFactory factory)
                     Street = entity.Street,
                     Products = entity.Products.Select(product => new ProductModel()
                     {
-                        Count = product.Count,
-                        Description = product.Description,
+                        Count = product.Product.Count,
+                        Description = product.Product.Description,
                         Id = product.Id,
-                        Manufacturer = product.Manufacturer,
-                        Name = product.Name,
-                        Category = new CategoryModel()
-                        {
-                            Id = product.Category.Id,
-                            Name = product.Category.Name,
-                        },
+                        Manufacturer = product.Product.Manufacturer,
+                        Name = product.Product.Name,
                         ProductType = new ProductTypeModel()
                         {
-                            Id = product.ProductType.Id,
-                            Name = product.ProductType.Name,
+                            Id = product.Product.ProductType.Id,
+                            Name = product.Product.ProductType.Name,
+                            Category = new CategoryModel()
+                            {
+                                Name = product.Product.ProductType.Category.Name,
+                                Id = product.Product.ProductType.Category.Id,
+                            }
                         }
                     })
                     .ToList()

@@ -132,7 +132,10 @@ namespace PharmaCheck.EntityFramework.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    IsPaid = table.Column<bool>(type: "boolean", nullable: false),
+                    PaidAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
                     ClientId = table.Column<Guid>(type: "uuid", nullable: true),
+                    PharmacyId = table.Column<Guid>(type: "uuid", nullable: false),
                     CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     UpdatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     DeletedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true)
@@ -145,6 +148,12 @@ namespace PharmaCheck.EntityFramework.Migrations
                         column: x => x.ClientId,
                         principalTable: "Clients",
                         principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Checks_Pharmacies_PharmacyId",
+                        column: x => x.PharmacyId,
+                        principalTable: "Pharmacies",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -176,6 +185,7 @@ namespace PharmaCheck.EntityFramework.Migrations
                     Name = table.Column<string>(type: "text", nullable: false),
                     Description = table.Column<string>(type: "text", nullable: false),
                     Manufacturer = table.Column<string>(type: "text", nullable: false),
+                    Price = table.Column<float>(type: "real", nullable: false),
                     Count = table.Column<int>(type: "integer", nullable: false),
                     PharmacyId = table.Column<Guid>(type: "uuid", nullable: false),
                     CategoryId = table.Column<Guid>(type: "uuid", nullable: false),
@@ -264,6 +274,11 @@ namespace PharmaCheck.EntityFramework.Migrations
                 name: "IX_Checks_ClientId",
                 table: "Checks",
                 column: "ClientId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Checks_PharmacyId",
+                table: "Checks",
+                column: "PharmacyId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Product Checks_CheckId",

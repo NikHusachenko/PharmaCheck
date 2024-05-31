@@ -12,5 +12,6 @@ public sealed record PharmacyEntity : BaseEntity
     public string ContactPhone { get; set; } = string.Empty;
     public PharmacyType Type { get; set; }
 
-    public List<ProductEntity> Products { get; set; } = new List<ProductEntity>();
+    public List<CheckEntity> Checks { get; set; } = new List<CheckEntity>();
+    public List<PharmacyProductsEntity> Products { get; set; } = new List<PharmacyProductsEntity>();
 }

@@ -25,20 +25,20 @@ public sealed class GetPharmaciesRequestHandler(IRepositoryFactory factory)
                 Type = item.Type,
                 Products = item.Products.Select(product => new ProductModel()
                 {
-                    Category = new CategoryModel()
-                    {
-                        Name = product.Category.Name,
-                        Id = product.Category.Id,
-                    },
-                    Count = product.Count,
-                    Description = product.Description,
+                    Count = product.Product.Count,
+                    Description = product.Product.Description,
                     Id = product.Id,
-                    Manufacturer = product.Manufacturer,
-                    Name = product.Name,
+                    Manufacturer = product.Product.Manufacturer,
+                    Name = product.Product.Name,
                     ProductType = new ProductTypeModel()
                     {
-                        Id = product.ProductType.Id,
-                        Name = product.ProductType.Name,
+                        Id = product.Product.ProductType.Id,
+                        Name = product.Product.ProductType.Name,
+                        Category = new CategoryModel()
+                        {
+                            Name = product.Product.ProductType.Category.Name,
+                            Id = product.Product.ProductType.Category.Id,
+                        }
                     }
                 })
                 .ToList()

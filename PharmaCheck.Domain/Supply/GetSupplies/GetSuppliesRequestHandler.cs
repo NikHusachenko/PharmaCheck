@@ -20,11 +20,6 @@ public sealed class GetSuppliesRequestHandler(IRepositoryFactory factory)
                     Id = supply.Id,
                     Products = supply.Products.Select(product => new ProductModel()
                     {
-                        Category = new CategoryModel()
-                        {
-                            Id = product.Product.Category.Id,
-                            Name = product.Product.Category.Name
-                        },
                         Count = product.Product.Count,
                         Description = product.Product.Description,
                         Id = product.Product.Id,
@@ -34,17 +29,22 @@ public sealed class GetSuppliesRequestHandler(IRepositoryFactory factory)
                         {
                             Id = product.Product.ProductType.Id,
                             Name = product.Product.ProductType.Name,
+                            Category = new CategoryModel()
+                            {
+                                Id = product.Product.ProductType.Category.Id,
+                                Name = product.Product.ProductType.Category.Name,
+                            }
                         },
-                        Pharmacy = new PharmacyModel()
+                        Pharmacies = product.Product.Pharmacies.Select(x => new PharmacyModel()
                         {
-                            AdditionAddress = product.Product.Pharmacy.AdditionAddress,
-                            City = product.Product.Pharmacy.City,
-                            ContactPhone = product.Product.Pharmacy.ContactPhone,
-                            Name = product.Product.Pharmacy.Name,
-                            Region = product.Product.Pharmacy.Region,
-                            Street = product.Product.Pharmacy.Street,
-                            Type = product.Product.Pharmacy.Type,
-                        }
+                            AdditionAddress = x.Pharmacy.AdditionAddress,
+                            City = x.Pharmacy.City,
+                            ContactPhone = x.Pharmacy.ContactPhone,
+                            Name = x.Pharmacy.Name,
+                            Region = x.Pharmacy.Region,
+                            Street = x.Pharmacy.Street,
+                            Type = x.Pharmacy.Type,
+                        }).ToList(),
                     })
                     .ToList()
                 })

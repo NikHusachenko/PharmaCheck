@@ -8,8 +8,7 @@ public sealed record ProductModel
     public string Manufacturer { get; set; } = string.Empty;
     public int Count { get; set; }
 
-    public PharmacyModel Pharmacy { get; set; }
+    public List<PharmacyModel> Pharmacies { get; set; }
     public SupplyModel Supply { get; set; }
-    public CategoryModel Category { get; set; }
     public ProductTypeModel ProductType { get; set; }
 }

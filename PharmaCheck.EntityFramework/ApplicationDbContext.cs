@@ -17,6 +17,7 @@ namespace PharmaCheck.EntityFramework
         public DbSet<ClientEntity> Clients { get; set; }
         public DbSet<CheckEntity> Checks { get; set; }
         public DbSet<ProductCheckEntity> ProductChecks { get; set; }
+        public DbSet<PharmacyProductsEntity> PharmacyProducts { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
@@ -36,6 +37,7 @@ namespace PharmaCheck.EntityFramework
             modelBuilder.ApplyConfiguration(new ClientConfiguration());
             modelBuilder.ApplyConfiguration(new CheckConfiguration());
             modelBuilder.ApplyConfiguration(new ProductCheckConfiguration());
+            modelBuilder.ApplyConfiguration(new PharmacyProductsConfiguration());
         }
     }
 }

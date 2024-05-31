@@ -26,15 +26,15 @@ public sealed class GetSupplyByIdRequestHandler(IRepositoryFactory factory)
                         Id = product.Product.Id,
                         Manufacturer = product.Product.Manufacturer,
                         Name = product.Product.Name,
-                        Category = new CategoryModel()
-                        {
-                            Name = product.Product.Category.Name,
-                            Id = product.Product.Category.Id,
-                        },
                         ProductType = new ProductTypeModel()
                         {
                             Id = product.Product.ProductType.Id,
-                            Name = product.Product.ProductType.Name
+                            Name = product.Product.ProductType.Name,
+                            Category = new CategoryModel()
+                            {
+                                Name = product.Product.ProductType.Category.Name,
+                                Id = product.Product.ProductType.Category.Id
+                            }
                         }
                     })
                     .ToList()

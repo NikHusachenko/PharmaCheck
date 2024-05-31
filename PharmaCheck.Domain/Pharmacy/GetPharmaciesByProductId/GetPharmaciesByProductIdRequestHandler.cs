@@ -22,11 +22,11 @@ public sealed class GetPharmaciesByProductIdRequestHandler(IRepositoryFactory fa
                 Name = item.Name,
                 Products = item.Products.Select(product => new ProductModel()
                 {
-                    Description = product.Description,
-                    Count = product.Count,
-                    Id = product.Id,
-                    Manufacturer = product.Manufacturer,
-                    Name = product.Name
+                    Description = product.Product.Description,
+                    Count = product.Product.Count,
+                    Id = product.Product.Id,
+                    Manufacturer = product.Product.Manufacturer,
+                    Name = product.Product.Name
                 })
                 .ToList(),
                 Region = item.Region,
