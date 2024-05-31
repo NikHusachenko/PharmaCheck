@@ -2,7 +2,6 @@
 
 public sealed record CheckEntity : BaseEntity
 {
-    public bool IsPaid { get; set; }
     public DateTimeOffset? PaidAt { get; set; }
 
     public Guid? ClientId { get; set; }

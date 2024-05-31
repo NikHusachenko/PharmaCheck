@@ -26,7 +26,7 @@ public sealed class CheckRepository
 
     public async Task Delete(CheckEntity entity)
     {
-        if (entity.IsPaid)
+        if (entity.PaidAt.HasValue)
         {
             entity.DeletedAt = DateTimeOffset.Now.ToUniversalTime();
             _table.Update(entity);
@@ -73,5 +73,16 @@ public sealed class CheckRepository
             query;
 
         return await query.ToListAsync();
+    }
+
+    public async Task<CheckEntity?> GetById(Guid id) =>
+        await _table.Include(entity => entity.Products)
+            .FirstOrDefaultAsync(entity => entity.Id == id &&
+            !entity.DeletedAt.HasValue);
+
+    public async Task Update(CheckEntity entity)
+    {
+        _table.Update(entity);
+        await _context.SaveChangesAsync();
     }
 }
