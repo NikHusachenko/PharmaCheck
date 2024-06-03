@@ -16,6 +16,7 @@ public sealed class GetPharmaciesByProductIdRequestHandler(IRepositoryFactory fa
         return await repository.GetByProductId(request.Id)
             .Map<List<PharmacyEntity>, List<PharmacyModel>>(list => list.Select(item => new PharmacyModel()
             {
+                Id = item.Id,
                 AdditionAddress = item.AdditionAddress,
                 City = item.City,
                 ContactPhone = item.ContactPhone,

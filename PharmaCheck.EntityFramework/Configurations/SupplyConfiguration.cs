@@ -12,6 +12,10 @@ public sealed class SupplyConfiguration : IEntityTypeConfiguration<SupplyEntity>
 
         builder.HasOne<SupplierEntity>(supply => supply.Supplier)
             .WithMany(supplier => supplier.Supplies)
-            .HasForeignKey(supply => supply.Id);
+            .HasForeignKey(supply => supply.SupplierId);
+
+        builder.HasOne<PharmacyEntity>(supply => supply.Pharmacy)
+            .WithMany(pharmacy => pharmacy.Supplies)
+            .HasForeignKey(supply => supply.PharmacyId);
     }
 }

@@ -14,4 +14,5 @@ public sealed record PharmacyEntity : BaseEntity
 
     public List<CheckEntity> Checks { get; set; } = new List<CheckEntity>();
     public List<PharmacyProductsEntity> Products { get; set; } = new List<PharmacyProductsEntity>();
+    public List<SupplyEntity> Supplies { get; set; } = new List<SupplyEntity>();
 }

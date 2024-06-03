@@ -11,4 +11,6 @@ public interface IRepositoryFactory
     UserRepository NewUserRepository();
     CheckRepository NewCheckRepository();
     ProductCheckRepository NewProductCheckRepository();
+    PharmacyProductsRepository NewPharmacyProductsRepository();
+    ProductSupplyRepository NewProductSupplyRepository();
 }

@@ -18,6 +18,9 @@ public sealed class ProductCheckRepository
     {
         await _table.AddAsync(new ProductCheckEntity()
         {
+            CreatedAt = DateTimeOffset.UtcNow.ToUniversalTime(),
+            UpdatedAt = DateTimeOffset.UtcNow.ToUniversalTime(),
+            Id = Guid.NewGuid(),
             CheckId = CheckId,
             ProductId = ProductId
         });

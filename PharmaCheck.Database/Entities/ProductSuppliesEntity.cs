@@ -1,8 +1,8 @@
 ﻿namespace PharmaCheck.Database.Entities;
 
-public sealed class ProductSuppliesEntity
+public sealed record ProductSuppliesEntity
 {
-    public float Price { get; set; }
+    public int Count { get; set; }
 
     public Guid ProductId { get; set; }
     public ProductEntity Product { get; set; }

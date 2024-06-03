@@ -83,6 +83,7 @@ public sealed class PharmacyRepository
             .Include(entity => entity.Products)
                 .ThenInclude(product => product.Product)
                     .ThenInclude(product => product.ProductType)
+                        .ThenInclude(type => type.Category)
         .ToListAsync();
 
     public async Task<List<PharmacyEntity>> GetByProductId(Guid id) =>

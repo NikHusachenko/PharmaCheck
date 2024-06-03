@@ -1,10 +1,12 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using PharmaCheck.Database.Entities;
+using PharmaCheck.Domain.Product.AppendToOrder;
 using PharmaCheck.Domain.Product.AttachToCheck;
 using PharmaCheck.Domain.Product.Get;
 using PharmaCheck.Domain.Product.NewProduct;
 using PharmaCheck.Domain.Product.RemoveFromCheck;
+using PharmaCheck.Domain.Product.RemoveFromOrder;
 using PharmaCheck.Services.Extensions;
 using PharmaCheck.Services.Response;
 using PharmaCheck.Web.Infrastructure;
@@ -36,6 +38,20 @@ public class ProductController(IMediator mediator) : ControllerBase
 
     [HttpPost("check/detach")]
     public async Task<IActionResult> DetachFromCheck([FromBody] RemoveFromCheckRequest request) =>
+        await mediator.Send(request).Map<Result, IActionResult>(
+            result => result.IsError ?
+            StatusCode((int)result.StatusCode, ControllerResponse.ToErrorResult(result.ErrorMessage)) :
+            NoContent());
+
+    [HttpPost("order/append")]
+    public async Task<IActionResult> AppendToOrder([FromBody] AppendProductToOrderRequest request) =>
+        await mediator.Send(request).Map<Result, IActionResult>(
+            result => result.IsError ?
+            StatusCode((int)result.StatusCode, ControllerResponse.ToErrorResult(result.ErrorMessage)) :
+            NoContent());
+
+    [HttpPost("order/remove")]
+    public async Task<IActionResult> RemoveFromOrder([FromBody] RemoveProductFromOrderRequest request) =>
         await mediator.Send(request).Map<Result, IActionResult>(
             result => result.IsError ?
             StatusCode((int)result.StatusCode, ControllerResponse.ToErrorResult(result.ErrorMessage)) :

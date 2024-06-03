@@ -32,13 +32,12 @@ public sealed class SupplyRepository
         await _dbContext.SaveChangesAsync();
     }
 
-    public async Task<SupplyEntity?> GetById(Guid supplierId, Guid id) =>
+    public async Task<SupplyEntity?> GetById(Guid id) =>
         await _table
             .Include(entity => entity.Products)
             .ThenInclude(supply => supply.Product)
                 .ThenInclude(product => product.ProductType)
             .FirstOrDefaultAsync(entity => entity.Id == id &&
-                entity.SupplierId == supplierId &&
                 !entity.DeletedAt.HasValue);
 
     public async Task<List<SupplyEntity>> GetAll(Guid supplierId) =>

@@ -18,4 +18,6 @@ public sealed class RepositoryFactory : IRepositoryFactory
     public UserRepository NewUserRepository() => new(_dbContext);
     public CheckRepository NewCheckRepository() => new(_dbContext);
     public ProductCheckRepository NewProductCheckRepository() => new(_dbContext);
+    public PharmacyProductsRepository NewPharmacyProductsRepository() => new(_dbContext);
+    public ProductSupplyRepository NewProductSupplyRepository() => new(_dbContext);
 }

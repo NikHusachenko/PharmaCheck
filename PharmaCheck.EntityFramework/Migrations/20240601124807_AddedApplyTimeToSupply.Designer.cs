@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using PharmaCheck.EntityFramework;
@@ -11,9 +12,11 @@ using PharmaCheck.EntityFramework;
 namespace PharmaCheck.EntityFramework.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240601124807_AddedApplyTimeToSupply")]
+    partial class AddedApplyTimeToSupply
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -170,8 +173,8 @@ namespace PharmaCheck.EntityFramework.Migrations
                     b.Property<Guid>("ProductId")
                         .HasColumnType("uuid");
 
-                    b.Property<int>("Count")
-                        .HasColumnType("integer");
+                    b.Property<float>("Count")
+                        .HasColumnType("real");
 
                     b.Property<DateTimeOffset>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
@@ -270,8 +273,8 @@ namespace PharmaCheck.EntityFramework.Migrations
                     b.Property<Guid>("SupplyId")
                         .HasColumnType("uuid");
 
-                    b.Property<int>("Count")
-                        .HasColumnType("integer");
+                    b.Property<float>("Price")
+                        .HasColumnType("real");
 
                     b.HasKey("ProductId", "SupplyId");
 
@@ -356,7 +359,6 @@ namespace PharmaCheck.EntityFramework.Migrations
             modelBuilder.Entity("PharmaCheck.Database.Entities.SupplyEntity", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTimeOffset?>("AppliedAt")
@@ -380,8 +382,6 @@ namespace PharmaCheck.EntityFramework.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("PharmacyId");
-
-                    b.HasIndex("SupplierId");
 
                     b.ToTable("Supplies", (string)null);
                 });
@@ -528,15 +528,15 @@ namespace PharmaCheck.EntityFramework.Migrations
 
             modelBuilder.Entity("PharmaCheck.Database.Entities.SupplyEntity", b =>
                 {
-                    b.HasOne("PharmaCheck.Database.Entities.PharmacyEntity", "Pharmacy")
+                    b.HasOne("PharmaCheck.Database.Entities.SupplierEntity", "Supplier")
                         .WithMany("Supplies")
-                        .HasForeignKey("PharmacyId")
+                        .HasForeignKey("Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("PharmaCheck.Database.Entities.SupplierEntity", "Supplier")
+                    b.HasOne("PharmaCheck.Database.Entities.PharmacyEntity", "Pharmacy")
                         .WithMany("Supplies")
-                        .HasForeignKey("SupplierId")
+                        .HasForeignKey("PharmacyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

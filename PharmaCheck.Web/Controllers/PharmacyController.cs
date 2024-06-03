@@ -20,7 +20,7 @@ public class PharmacyController(IMediator mediator) : ControllerBase
     public async Task<IActionResult> CreateNew([FromBody] NewPharmacyRequest request) =>
         await mediator.Send(request)
             .Map<Result<Guid>, IActionResult>(result => result.IsError ?
-                StatusCode((int)result.StatusCode) :
+                StatusCode((int)result.StatusCode, ControllerResponse.ToErrorResult(result.ErrorMessage)) :
                 Ok(result.Value));
 
     [HttpGet("get/all")]

@@ -15,7 +15,11 @@ public sealed class NewSupplyRequestHandler(
     public async Task<Result<Guid>> Handle(NewSupplyRequest request, CancellationToken cancellationToken)
     {
         SupplyRepository repository = repositoryFactory.NewSupplyRepository();
-        SupplyEntity entity = new SupplyEntity() { SupplierId = request.SupplierId };
+        SupplyEntity entity = new SupplyEntity() 
+        { 
+            SupplierId = request.SupplierId,
+            PharmacyId = request.PharmacyId,
+        };
 
         try
         {

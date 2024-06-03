@@ -77,6 +77,7 @@ public sealed class CheckRepository
 
     public async Task<CheckEntity?> GetById(Guid id) =>
         await _table.Include(entity => entity.Products)
+            .ThenInclude(cp => cp.Product)
             .FirstOrDefaultAsync(entity => entity.Id == id &&
             !entity.DeletedAt.HasValue);
 

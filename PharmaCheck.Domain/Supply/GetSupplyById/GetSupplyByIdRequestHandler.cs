@@ -13,7 +13,7 @@ public sealed class GetSupplyByIdRequestHandler(IRepositoryFactory factory)
     public async Task<Result<SupplyModel>> Handle(GetSupplyByIdRequest request, CancellationToken cancellationToken)
     {
         SupplyRepository repository = factory.NewSupplyRepository();
-        return await repository.GetById(request.SupplierId, request.Id)
+        return await repository.GetById(request.Id)
             .Map(entity => entity is null ?
                 Result<SupplyModel>.Error("Supply not found.", ResultErrorStatusCode.NotFound) :
                 Result<SupplyModel>.Ok(new SupplyModel()

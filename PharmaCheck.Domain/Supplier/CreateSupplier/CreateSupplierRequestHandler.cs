@@ -15,7 +15,7 @@ public sealed class CreateSupplierRequestHandler(
     public async Task<Result<Guid>> Handle(CreateSupplierRequest request, CancellationToken cancellationToken)
     {
         SupplierRepository repository = repositoryFactory.NewSupplierRepository();
-        if ((await repository.CheckByAddress(request.Region, request.City, request.Street, request.AdditionAddress)) is false)
+        if ((await repository.CheckByAddress(request.Region, request.City, request.Street, request.AdditionAddress)) is true)
         {
             return Result<Guid>.Error("Was created", ResultErrorStatusCode.BadRequest);
         }

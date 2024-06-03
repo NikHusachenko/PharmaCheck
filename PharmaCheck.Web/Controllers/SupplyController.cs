@@ -7,6 +7,7 @@ using PharmaCheck.Services.Response;
 using PharmaCheck.Services.Extensions;
 using PharmaCheck.Web.Infrastructure;
 using PharmaCheck.Domain.Supply.GetSupplyById;
+using PharmaCheck.Domain.Supply.Apply;
 
 namespace PharmaCheck.Web.Controllers;
 
@@ -32,4 +33,11 @@ public class SupplyController(IMediator mediator) : ControllerBase
             result => result.IsError ?
             StatusCode((int)result.StatusCode, ControllerResponse.ToErrorResult(result.ErrorMessage)) :
             Ok(result.Value));
+
+    [HttpPost("apply")]
+    public async Task<IActionResult> Apply([FromBody] ApplySupplyRequest request) =>
+        await mediator.Send(request).Map<Result, IActionResult>(
+            result => result.IsError ?
+            StatusCode((int)result.StatusCode, ControllerResponse.ToErrorResult(result.ErrorMessage)) :
+            NoContent());
 }
