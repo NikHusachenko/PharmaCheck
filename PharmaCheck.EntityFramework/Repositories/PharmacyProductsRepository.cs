@@ -46,7 +46,7 @@ public sealed class PharmacyProductsRepository
         await _dbContext.SaveChangesAsync();
     }
 
-    public async Task<int> CheckCount(Guid pharmacyId, Guid productId)
+    public async Task<int> CheckCount(Guid productId)
     {
         PharmacyProductsEntity? entity = await _table.FirstOrDefaultAsync(
             entity => entity.PharmacyId == productId &&
@@ -60,15 +60,15 @@ public sealed class PharmacyProductsRepository
     {
         using (var transaction = await _dbContext.Database.BeginTransactionAsync())
         {
-            var productIds = products.Select(p => p.id).ToList();
+            List<Guid> productIds = products.Select(p => p.id).ToList();
 
-            var entities = await _table
+            List<PharmacyProductsEntity> entities = await _table
                 .Where(entity => entity.PharmacyId == pharmacyId && productIds.Contains(entity.ProductId))
                 .ToListAsync();
 
-            foreach (var entity in entities)
+            foreach (PharmacyProductsEntity entity in entities)
             {
-                var product = products.FirstOrDefault(p => p.id == entity.ProductId);
+                (Guid id, int count) product = products.FirstOrDefault(p => p.id == entity.ProductId);
                 if (product != default)
                 {
                     entity.Count = product.count;
@@ -78,8 +78,8 @@ public sealed class PharmacyProductsRepository
             await _dbContext.BulkInsertOrUpdateAsync(entities);
             await _dbContext.SaveChangesAsync();
 
-            var existingProductIds = entities.Select(e => e.ProductId).ToHashSet();
-            var newProducts = products.Where(p => !existingProductIds.Contains(p.id))
+            IEnumerable<Guid> existingProductIds = entities.Select(e => e.ProductId).ToHashSet();
+            IEnumerable<PharmacyProductsEntity> newProducts = products.Where(p => !existingProductIds.Contains(p.id))
                                       .Select(p => new PharmacyProductsEntity
                                       {
                                           CreatedAt = DateTimeOffset.Now.ToUniversalTime(),
@@ -98,5 +98,24 @@ public sealed class PharmacyProductsRepository
 
             await transaction.CommitAsync();
         }
+    }
+
+    public async Task<int> GetExists(Guid pharmacyId, Guid productId)
+    {
+        PharmacyProductsEntity? dbRecord = await _table.FirstOrDefaultAsync(
+            record => record.PharmacyId == pharmacyId &&
+            record.ProductId == productId);
+
+        return dbRecord is null ? -1 : dbRecord.Count - dbRecord.Reserved;
+    }
+
+    public async Task<PharmacyProductsEntity?> Get(Guid pharmacyId, Guid productId) =>
+        await _table.FirstOrDefaultAsync(entity => entity.PharmacyId == pharmacyId &&
+            entity.ProductId == productId);
+
+    public async Task Update(PharmacyProductsEntity entity)
+    {
+        _table.Update(entity);
+        await _dbContext.SaveChangesAsync();
     }
 }

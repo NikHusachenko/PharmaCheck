@@ -17,7 +17,7 @@ public sealed class PayCheckRequestHandler(
     public async Task<Result> Handle(PayCheckRequest request, CancellationToken cancellationToken)
     {
         CheckRepository repository = factory.NewCheckRepository();
-        
+
         CheckEntity? entity = await repository.GetById(request.Id);
         if (entity is null)
         {
@@ -29,16 +29,19 @@ public sealed class PayCheckRequestHandler(
             return Result.Error(CantPayEmptyCheckError, ResultErrorStatusCode.BadRequest);
         }
 
-        entity.PaidAt = DateTimeOffset.Now.ToUniversalTime();
+        PharmacyProductsRepository pharmacyProductsRepository = factory.NewPharmacyProductsRepository();
 
+
+        entity.PaidAt = DateTimeOffset.Now.ToUniversalTime();
         try
         {
             await repository.Update(entity);
         }
-        catch (Exception ex)
+        catch
         {
             return Result.Error(MarkCheckIsPaidError, ResultErrorStatusCode.InternalError);
         }
+
         return Result.Ok(ResultSuccessStatusCode.NoContent);
     }
 }
